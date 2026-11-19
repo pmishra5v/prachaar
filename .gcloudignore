@@ -1,3 +1,8 @@
 .git
 *.md
 deploy.sh
+*.ps1
+.local-port
+data/
+tools/
+dataset/*.xlsx

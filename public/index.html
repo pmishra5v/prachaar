@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Prachar: AI CMO demo for Indian auto-parts distributors.">
+<meta name="description" content="Prachaar: AI CMO demo for Indian auto-parts distributors.">
 <style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Prachar AI CMO</title>
+<title>Prachaar AI CMO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&display=swap">
@@ -50,6 +50,9 @@ header.top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bot
 .biz span{color:var(--muted);font-size:12px}
 .mode{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
+.wachip{font-size:12px;font-weight:600;text-decoration:none;padding:3px 9px;border-radius:999px;background:var(--warn-soft);color:var(--warn);white-space:nowrap}
+.wachip.on{background:var(--good-soft);color:var(--good)}
+#acctLinks{display:inline-flex;gap:6px;align-items:center}
 .dot.on{background:var(--good)} .dot.off{background:var(--warn)}
 .ghost{border:1px solid var(--line);background:transparent;border-radius:6px;padding:4px 10px;font-size:12px}
 .ghost:hover{background:var(--surface-2)}
@@ -78,6 +81,23 @@ form.composer{display:flex;gap:8px;padding:10px 16px 14px;border-top:1px solid v
 form.composer textarea{flex:1;resize:none;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font:inherit;background:var(--bg);color:var(--ink);min-height:42px;max-height:140px}
 .send{border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;border-radius:10px;padding:10px 16px}
 .send[disabled]{opacity:.5;cursor:not-allowed}
+.mic{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 12px;min-width:44px;justify-content:center}
+.mic:hover{border-color:var(--accent)}
+.mic-t{font-size:13px;font-weight:600}
+.vpanel{display:flex;align-items:center;gap:12px;padding:12px 16px 14px;border-top:1px solid var(--line);background:var(--surface)}
+.vorb{position:relative;width:44px;height:44px;border-radius:50%;background:var(--surface-2);flex:0 0 auto;display:grid;place-items:center;overflow:hidden}
+.vorb span{position:absolute;inset:auto 0 0 0;height:0;background:var(--accent);opacity:.85;transition:height .08s linear}
+.vorb::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--muted);position:relative}
+.vpanel[data-state="listening"] .vorb::after{background:var(--bad)}
+.vpanel[data-state="thinking"] .vorb{animation:vthink 1s ease-in-out infinite}
+.vpanel[data-state="speaking"] .vorb::after{background:var(--good)}
+@keyframes vthink{50%{opacity:.5}}
+@media (prefers-reduced-motion: reduce){.vpanel[data-state="thinking"] .vorb{animation:none}}
+.vtext{display:flex;flex-direction:column;min-width:0;flex:1}
+.vtext b{font-size:14px}
+.vtext span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vbtn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 12px;font-weight:500;display:inline-flex;align-items:center;gap:6px}
+.vend{background:var(--bad);border-color:var(--bad);color:#fff}
 .stop{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px}
 
 .work{display:flex;flex-direction:column;min-height:0;min-width:0}
@@ -109,6 +129,9 @@ h2.sec{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:
 .wa{background:var(--wa-bg);border-radius:10px;padding:10px;min-height:120px}
 .wa-b{background:var(--wa-bubble);border-radius:8px;border-top-left-radius:2px;padding:6px 8px;font-size:12.5px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.08);overflow-wrap:anywhere}
 .wa-b .poster{margin-bottom:6px}
+.wa-btns{display:flex;gap:4px;margin-top:4px}
+.wa-btns span{flex:1;text-align:center;background:var(--wa-bubble);border-radius:8px;padding:6px;font-size:12.5px;font-weight:600;color:#027EB5;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.tplnote{font-size:11.5px;color:var(--muted);margin-top:6px}
 .wa-t{text-align:right;font-size:10px;color:var(--muted)}
 .fb,.ig{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:12.5px}
 .post-h{display:flex;align-items:center;gap:8px;padding:8px 10px}
@@ -156,6 +179,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var
 .flag{font-size:11px;border-radius:3px;padding:0 5px;white-space:nowrap}
 .flag.dead{background:var(--bad-soft);color:var(--bad)} .flag.fast{background:var(--good-soft);color:var(--good)}
 .aud{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.filter{width:100%;max-width:420px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;background:var(--surface);color:var(--ink)}
 .aud-c{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 .aud-c h4{margin:0 0 6px;font-size:14px}
 .aud-c dl{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin:0;font-size:12.5px}
@@ -176,10 +200,10 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var
 <div class="app" id="app" data-view="chat">
   <header class="top">
     <div class="logo">
-      <span class="plate" aria-hidden="true">PRACHAR</span>
-      <div class="biz"><b>Sri Venkateswara Auto Spares</b><span>AI CMO · Kukatpally, Hyderabad · sample data</span></div>
+      <span class="plate" aria-hidden="true">PRACHAAR</span>
+      <div class="biz"><b id="bizName">Sri Venkateswara Auto Spares</b><span id="bizSub">AI CMO · Kukatpally, Hyderabad · sample data</span></div>
     </div>
-    <div class="mode"><span class="dot" id="modeDot"></span><span id="modeText">Connecting…</span><button class="ghost" id="resetBtn" type="button">Reset demo</button></div>
+    <div class="mode"><span class="dot" id="modeDot"></span><span id="modeText">Connecting…</span><span id="saveState" aria-live="polite"></span><span id="acct" hidden><span id="acctLinks"></span><button type="button" class="signout" id="signOut">Sign out</button></span><button class="ghost" id="resetBtn" type="button">Reset demo</button></div>
     <div class="switch" role="group" aria-label="View">
       <button type="button" id="vChat" aria-pressed="true">Chat</button>
       <button type="button" id="vWork" aria-pressed="false">Campaigns &amp; stock</button>
@@ -189,10 +213,21 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var
     <section class="chat" aria-label="Chat with AI CMO">
       <div class="log" id="log" aria-live="polite"></div>
       <div class="chips" id="chips"></div>
+      <div class="vpanel" id="vPanel" hidden aria-live="polite">
+        <div class="vorb" id="vOrb" aria-hidden="true"><span id="vLevel"></span></div>
+        <div class="vtext"><b id="vState">Listening…</b><span id="vHint">Speak now. I'll reply out loud.</span></div>
+        <button type="button" class="vbtn" id="vSkip" hidden>Skip</button>
+        <button type="button" class="vbtn vend" id="vEnd" aria-label="End voice mode">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z"/></svg>
+          End voice</button>
+      </div>
       <form class="composer" id="composer">
-        
-        <textarea id="input" rows="1" aria-label="Message to Prachar" placeholder="e.g. 20% off on Swift brake pads, send to garages on WhatsApp and Instagram"></textarea>
+        <textarea id="input" rows="1" aria-label="Message to Prachaar" placeholder="e.g. 15% off on a part, send to garages on WhatsApp and Instagram"></textarea>
         <button type="button" class="stop" id="stopBtn" hidden>Stop</button>
+        <button type="button" class="mic" id="micBtn" hidden aria-label="Speak your message" title="Talk to Prachaar. Tap again to go back to typing">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z"/></svg>
+          <span class="mic-t">Talk</span>
+        </button>
         <button type="submit" class="send" id="sendBtn">Send</button>
       </form>
     </section>
@@ -210,58 +245,30 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var
 <script>
 (() => {
 "use strict";
-const BIZ = { name:"Sri Venkateswara Auto Spares", short:"SVAS", area:"Kukatpally, Hyderabad", phone:"+91 90000 12345", minMargin:10 };
+const BR = window.BRAND || {id:"prachaar", name:"Prachaar", assistant:"Prachaar", title:"Prachaar AI CMO", login:false};
+const ANAME = BR.assistant;
+const LIVE = null;   // Prachaar is a demo: WhatsApp sending is always simulated
+document.getElementById("input").setAttribute("aria-label", "Message to " + ANAME);
+document.getElementById("micBtn").title = `Talk to ${ANAME}. Tap again to go back to typing`;
+let BIZ = { name:"Sri Venkateswara Auto Spares", short:"SVAS", area:"Kukatpally, Hyderabad", phone:"+91 90000 12345", minMargin:10 };
+let DATASET = null;   // anonymised InsiTE data from the server (see tools/anonymize_insite.py)
 const WA_RATE = 0.8631, GST = 0.18;
 const TODAY = new Date();
 const fmtDate = d => d.toLocaleDateString("en-IN",{day:"numeric",month:"short"});
 const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
 const inr2 = n => "₹" + n.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
-const cap = s => s[0].toUpperCase()+s.slice(1);
+const cap = s => ({whatsapp:"WhatsApp",facebook:"Facebook",instagram:"Instagram"})[s] || (s[0].toUpperCase()+s.slice(1));
+const pname = p => [p.brand,p.name].filter(Boolean).join(" ");
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-const SEED_PRODUCTS = [
-  {sku:"BP-SWF-01",name:"Front brake pad set",brand:"Bosch",fit:"Maruti Swift / Dzire (2018+)",cat:"Brakes",hsn:"8708",mrp:1850,price:1450,cost:950,stock:146,lastSale:128,seg:"car"},
-  {sku:"OF-ACT-02",name:"Oil filter",brand:"Purolator",fit:"Honda Activa 5G / 6G",cat:"Filters",hsn:"8421",mrp:120,price:95,cost:62,stock:820,lastSale:1,seg:"2w",fast:true},
-  {sku:"WB-UNI-18",name:"Wiper blade 18\"",brand:"Bosch Clear Advantage",fit:"Universal (hook type)",cat:"Wipers",hsn:"8512",mrp:420,price:340,cost:225,stock:610,lastSale:96,seg:"car"},
-  {sku:"CK-SPL-03",name:"Chain sprocket kit",brand:"Rolon",fit:"Hero Splendor Plus",cat:"Transmission",hsn:"8714",mrp:950,price:780,cost:560,stock:95,lastSale:3,seg:"2w"},
-  {sku:"CL-BOL-04",name:"Clutch plate kit",brand:"Valeo",fit:"Mahindra Bolero",cat:"Clutch",hsn:"8708",mrp:6100,price:5200,cost:4150,stock:22,lastSale:12,seg:"car"},
-  {sku:"HL-PUL-05",name:"Headlight assembly",brand:"Lumax",fit:"Bajaj Pulsar 150",cat:"Lighting",hsn:"8512",mrp:1990,price:1650,cost:1210,stock:40,lastSale:21,seg:"2w"},
-  {sku:"BT-AMR-35",name:"Car battery 35Ah",brand:"Amaron",fit:"Small cars (Alto, Kwid, WagonR)",cat:"Batteries",hsn:"8507",mrp:5400,price:4650,cost:3900,stock:55,lastSale:4,seg:"car"},
-  {sku:"SA-ACE-07",name:"Rear shock absorber",brand:"Gabriel",fit:"Tata Ace",cat:"Suspension",hsn:"8708",mrp:1650,price:1380,cost:1020,stock:64,lastSale:9,seg:"cv"},
-  {sku:"AF-CRT-08",name:"Air filter",brand:"Mann",fit:"Hyundai Creta (2020+)",cat:"Filters",hsn:"8421",mrp:650,price:540,cost:360,stock:210,lastSale:2,seg:"car",fast:true},
-  {sku:"SP-NGK-09",name:"Spark plug CPR8EA-9",brand:"NGK",fit:"Most 110–160cc bikes",cat:"Ignition",hsn:"8511",mrp:200,price:165,cost:110,stock:1200,lastSale:1,seg:"2w",fast:true},
-  {sku:"CO-SRV-1L",name:"Engine coolant 1L",brand:"Servo",fit:"All cars",cat:"Fluids",hsn:"3820",mrp:310,price:260,cost:180,stock:380,lastSale:6,seg:"car"},
-  {sku:"BS-APE-10",name:"Rear brake shoe set",brand:"Brakes India",fit:"Piaggio Ape (3W)",cat:"Brakes",hsn:"8708",mrp:520,price:420,cost:300,stock:175,lastSale:95,seg:"cv"}
-];
-const AUDIENCES = [
-  {id:"garages",name:"Garages & mechanics",total:420,optIn:388,note:"Car and 2W workshops"},
-  {id:"retailers",name:"Parts shops (retail)",total:180,optIn:171,note:"Counter sales shops"},
-  {id:"fleets",name:"Fleet owners & transporters",total:35,optIn:31,note:"Tata Ace, Ape, Bolero fleets"},
-  {id:"lapsed",name:"Lapsed buyers (45+ days)",total:64,optIn:58,note:"Ordered monthly before"},
-  {id:"all",name:"All B2B customers",total:635,optIn:590,note:"Everyone opted in"}
-];
-const SOCIAL = { facebook:{followers:3240}, instagram:{followers:1480} };
+let SEED_PRODUCTS = [];   // filled from the anonymised InsiTE dataset (/api/dataset) at startup
+let AUDIENCES = [];
+let SOCIAL = { facebook:{followers:3240}, instagram:{followers:1480} };
 
 let S;
 function seed(){
-  const p = JSON.parse(JSON.stringify(SEED_PRODUCTS));
-  const wb = p.find(x=>x.sku==="WB-UNI-18");
-  const past = new Date(TODAY); past.setDate(past.getDate()-104);
-  const until = new Date(past); until.setDate(until.getDate()+10);
-  S = {
-    products:p, campaigns:[{
-      id:"C-0001", name:"Pre-monsoon wiper blades", example:true, status:"sent", created:past, sentAt:past,
-      skus:["WB-UNI-18"], audience:"garages", channels:["whatsapp","instagram"], language:"English",
-      headline:"Monsoon ready wipers", offerSnap:{percent:15,price:289,was:340,until},
-      whatsapp:"Monsoon is here! Bosch Clear Advantage 18\" wiper blades now ₹289 (was ₹340). Offer till "+fmtDate(until)+". Reply ORDER or call "+BIZ.phone+".\nReply STOP to opt out.",
-      facebook:"", instagram:"Clear view this monsoon. Bosch wiper blades at ₹289 for garages. #Hyderabad #AutoParts #Monsoon",
-      adBudget:0, adDays:0,
-      delivery:{whatsapp:{sent:388,delivered:371,cost:371*WA_RATE*(1+GST)},instagram:{reach:640}},
-      results:{replies:34,orders:19,units:212,sales:212*289}
-    }],
-    seq:2, tab:"camp", flash:null
-  };
-  wb.lastSale = 96;
+  // Starting state = the dataset's parts with no offers and no campaigns. "Reset demo" returns here.
+  S = {products: JSON.parse(JSON.stringify(SEED_PRODUCTS)), campaigns:[], seq:1, tab:"camp", flash:null, stockQ:"", custQ:""};
 }
 seed();
 
@@ -305,20 +312,31 @@ function removeDiscount(sku){
   if(!p) throw new Error("No product with SKU "+sku);
   p.offer = null; render(); return {sku:p.sku, price_now:p.price};
 }
-function waCost(aud){ const a = AUDIENCES.find(x=>x.id===aud); return a ? a.optIn*WA_RATE*(1+GST) : 0; }
+// WhatsApp recipients: the distributor's real opted-in customers when WhatsApp is connected, otherwise the demo audience
+function waCount(aud){ if(LIVE) return LIVE.optedIn; const a = AUDIENCES.find(x=>x.id===aud); return a ? a.optIn : 0; }
+function waCost(aud){ return waCount(aud)*WA_RATE*(1+GST); }
 function createDraft(input){
-  const skus = (Array.isArray(input.skus)?input.skus:[input.skus]).filter(Boolean).map(s=>String(s).toUpperCase());
-  const prods = skus.map(s=>S.products.find(p=>p.sku===s));
-  if(!prods.length || prods.some(p=>!p)) throw new Error("Unknown SKU in "+skus.join(", ")+". Use search_products.");
+  // Be forgiving about how the model fills fields: fix what we can, explain what we can't.
+  const list = v => (Array.isArray(v)?v:String(v??"").split(/\s*(?:,|&|\+|\band\b|\/)\s*/i)).map(x=>String(x).trim()).filter(Boolean);
+  let skus = list(input.skus ?? input.sku).map(s=>s.toUpperCase());
+  let prods = skus.map(s=>S.products.find(p=>p.sku===s) || findProducts(s)[0]);
+  if(!prods.length || prods.some(p=>!p)) throw new Error("Unknown product in skus: "+skus.join(", ")+". Call search_products and pass the exact SKU it returns.");
+  prods = [...new Set(prods)]; skus = prods.map(p=>p.sku);
   if(prods.some(p=>p.stock<=0)) throw new Error("Cannot promote an out-of-stock item.");
-  const aud = AUDIENCES.find(a=>a.id===input.audience_id) ? input.audience_id : null;
-  if(!aud) throw new Error("audience_id must be one of: "+AUDIENCES.map(a=>a.id).join(", "));
-  let ch = (Array.isArray(input.channels)?input.channels:[input.channels]).map(c=>String(c).toLowerCase()).map(c=>c.startsWith("insta")?"instagram":c.startsWith("f")?"facebook":c.startsWith("wh")?"whatsapp":c).filter(c=>["whatsapp","facebook","instagram"].includes(c));
-  ch = [...new Set(ch)]; if(!ch.length) throw new Error("channels must include whatsapp, facebook and/or instagram");
-  if(ch.includes("whatsapp") && !input.whatsapp_message) throw new Error("whatsapp_message is required for WhatsApp.");
-  if(input.whatsapp_message && input.whatsapp_message.length>1000) throw new Error("WhatsApp message too long; keep under 600 characters.");
+  const a0 = String(input.audience_id ?? input.audience ?? "").toLowerCase();
+  const audObj = AUDIENCES.find(a=>a.id===a0) || AUDIENCES.find(a=>a0 && (a.id.startsWith(a0.slice(0,4)) || a.name.toLowerCase().includes(a0.slice(0,5))));
+  const aud = audObj ? audObj.id : "garages";
+  let ch = list(input.channels ?? input.channel).map(c=>c.toLowerCase()).map(c=>c.startsWith("insta")||c==="ig"?"instagram":c.startsWith("face")||c==="fb"?"facebook":c.startsWith("wh")||c==="wa"?"whatsapp":c).filter(c=>["whatsapp","facebook","instagram"].includes(c));
+  ch = [...new Set(ch)]; if(!ch.length) ch = ["whatsapp"];
+  const p0 = prods[0]; const o0 = activeOffer(p0);
+  const priceLine = o0 ? `Now ${inr(o0.price)} (was ${inr(o0.was)}) · Offer till ${fmtDate(o0.until)}` : `Price ${inr(p0.price)}`;
+  if(ch.includes("whatsapp") && !input.whatsapp_message) input.whatsapp_message = `${o0?o0.percent+"% OFF – ":""}${pname(p0)}\nFits: ${p0.fit}\n${priceLine}\nReply ORDER or call ${BIZ.phone}.\nReply STOP to opt out.`;
+  if(ch.includes("facebook") && !input.facebook_post) input.facebook_post = `${pname(p0)} for ${p0.fit}. ${priceLine}. WhatsApp ${BIZ.phone} to order.`;
+  if(ch.includes("instagram") && !input.instagram_caption) input.instagram_caption = `${pname(p0)} – ${priceLine}. #Hyderabad #AutoParts`;
+  if(!input.poster_headline) input.poster_headline = p0.name;
+  if(input.whatsapp_message && input.whatsapp_message.length>1000) input.whatsapp_message = input.whatsapp_message.slice(0,1000);
   if(input.replaces_id){ const old = S.campaigns.find(c=>c.id===input.replaces_id && c.status==="draft"); if(old) old.status="discarded"; }
-  const p0 = prods[0]; const o = activeOffer(p0);
+  const o = o0;
   const c = {
     id:"C-"+String(S.seq++).padStart(4,"0"), name:String(input.name||("Offer: "+p0.name)).slice(0,80), status:"draft", created:new Date(),
     skus, audience:aud, channels:ch, language:String(input.language||"English"),
@@ -332,20 +350,95 @@ function createDraft(input){
   if(c.adBudget && !c.adDays) c.adDays = 5;
   S.campaigns.unshift(c); S.tab="camp"; S.flash=c.id; render();
   return {campaign_id:c.id, status:"draft — waiting for owner approval in the Campaigns panel", channels:ch, audience:aud,
-    est_cost_inr:Math.round(estCost(c)), whatsapp_recipients: ch.includes("whatsapp")?AUDIENCES.find(a=>a.id===aud).optIn:0};
+    est_cost_inr:Math.round(estCost(c)), whatsapp_recipients: ch.includes("whatsapp")?waCount(aud):0, ...(LIVE?{whatsapp_live:!LIVE.sim, note:"WhatsApp goes to the distributor's opted-in customers when approved"}:{})};
 }
 function estCost(c){ let t=0; if(c.channels.includes("whatsapp")) t+=waCost(c.audience); if(c.adBudget) t+=c.adBudget*c.adDays*(1+GST); return t; }
 function insights(){
-  const dead = S.products.filter(p=>p.lastSale>=90).map(p=>({sku:p.sku,name:p.name,fits:p.fit,stock_units:p.stock,stock_value_at_cost:inr(p.stock*p.cost),days_since_last_sale:p.lastSale}));
-  const fast = S.products.filter(p=>p.fast).map(p=>({sku:p.sku,name:p.name,stock_units:p.stock}));
-  return {dead_stock:dead, fast_movers:fast, lapsed_customers:{count:64,opted_in:58},
-    season:"Late Sept–Oct: monsoon ending in Telangana (wipers, brakes see less demand); Navratri–Dussehra in October and Diwali in November drive vehicle servicing and fleet repairs; festive offers work well with garages.",
+  const dead = S.products.filter(p=>p.lastSale>=90 && p.stock>0).sort((a,b)=>b.stock*b.cost-a.stock*a.cost).slice(0,10)
+    .map(p=>({sku:p.sku,name:p.name,fits:p.fit,stock_units:p.stock,stock_value_at_cost:inr(p.stock*p.cost),days_since_last_sale:p.lastSale, ...(p.neverSold?{never_sold_in_data_window:true}:{})}));
+  const fast = S.products.filter(p=>p.fast).sort((a,b)=>(b.sold30||0)-(a.sold30||0)).slice(0,10).map(p=>({sku:p.sku,name:p.name,fits:p.fit,sold_last_30_days:p.sold30,stock_units:p.stock}));
+  const lap = AUDIENCES.find(a=>a.id==="lapsed")||{total:0,optIn:0};
+  const deadCount = S.products.filter(p=>p.lastSale>=90 && p.stock>0).length;
+  return {dead_stock_top10_by_value:dead, dead_stock_items_total:deadCount, fast_movers:fast, lapsed_customers:{count:lap.total,opted_in:lap.optIn},
+    data_as_of: DATASET?DATASET.asOf:undefined,
+    season:"Late Sept–Oct: monsoon ending in Telangana; Navratri–Dussehra in October and Diwali in November drive two-wheeler servicing and new-bike purchases; festive offers work well with garages and mechanics.",
     today:TODAY.toDateString()};
 }
 function campaignStatus(id){
   const c = S.campaigns.find(x=>x.id===id); if(!c) throw new Error("No campaign "+id);
   return {id:c.id,name:c.name,status:c.status,channels:c.channels,audience:c.audience,delivery:c.delivery||null,results:c.results||null,simulated:true};
 }
+
+
+// ---------- saving: business data on the server, chat in this browser ----------
+let stateReady = false, stateRev = 0, lastSaved = "", saveTimer = null, persistOn = false, saving = false;
+const DATE_KEYS = new Set(["created","sentAt","until"]);
+function reviveState(st){
+  return JSON.parse(JSON.stringify(st), (k,v)=> DATE_KEYS.has(k) && typeof v==="string" ? new Date(v) : v);
+}
+function snapshot(){
+  const offers = {}; S.products.forEach(p=>{ if(p.offer) offers[p.sku]=p.offer; });
+  return JSON.stringify({dataset: DATASET?DATASET.version:"sample", offers, campaigns:S.campaigns, seq:S.seq});
+}
+function setSaveState(t){ const el=$("saveState"); if(el) el.textContent=t; }
+function scheduleSave(){
+  if(!stateReady || !persistOn) return;
+  clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 400);
+}
+async function saveNow(){
+  const snap = snapshot(); if(snap===lastSaved || saving) return;
+  saving = true; setSaveState("Saving…");
+  try{
+    const payload = JSON.stringify({state:JSON.parse(snap),rev:stateRev});
+    const r = await fetch("/api/state",{method:"PUT",keepalive:payload.length<60000,headers:{"content-type":"application/json","x-access-code":(typeof accessCode!=="undefined"?accessCode:"")},body:payload});
+    const j = await r.json().catch(()=>({}));
+    if(r.ok){ stateRev=j.rev; lastSaved=snap; setSaveState("Saved"); }
+    else if(r.status===409 && j.state){ applyServerState(j); note("Campaigns were changed in another window, so I loaded the latest version."); }
+    else setSaveState("Not saved (server storage unavailable)");
+  }catch(_){ setSaveState("Not saved (offline)"); }
+  finally{ saving=false; if(snapshot()!==lastSaved && persistOn) scheduleSave(); }
+}
+function applyServerState(j){
+  const st = reviveState(j.state);
+  if(st.offers){ S.products.forEach(p=>{ p.offer = st.offers[p.sku] || null; }); }
+  else if(Array.isArray(st.products)){ const m = new Map(st.products.map(x=>[x.sku,x])); S.products.forEach(p=>{ const x=m.get(p.sku); if(x&&x.offer) p.offer=x.offer; }); }
+  S.campaigns = st.campaigns.filter(c=>(c.skus||[]).every(k=>S.products.some(p=>p.sku===k)));
+  S.seq = st.seq || (S.campaigns.length+1);
+  stateRev = j.rev||0; lastSaved = snapshot();
+  // finish any simulated send that was interrupted by a refresh
+  S.campaigns.forEach(c=>{
+    if(c.liveSending && c.status==="sending"){ c.status="sent"; c.live=true; c.sentAt=c.sentAt||new Date(); c.delivery={whatsapp:{sent:0,delivered:0,read:0}}; delete c.liveSending; return; }   // page closed mid-send: counts come from the server
+    if(c.live) return;
+    if(c.status==="sending") completeSend(c,true); else if(c.status==="sent" && !c.results) addResults(c,true); });
+  render();
+}
+async function loadState(){
+  try{
+    const r = await fetch("/api/state",{cache:"no-store"});
+    if(!r.ok) throw new Error("no store");
+    const j = await r.json(); persistOn = true;
+    if(j.state && Array.isArray(j.state.campaigns)) applyServerState(j);
+    else { stateRev = j.rev||0; lastSaved = ""; }
+    setSaveState(j.state ? "Saved" : "");
+  }catch(_){ persistOn = false; setSaveState("Not saved (demo only)"); }
+  stateReady = true; scheduleSave();
+}
+const CHAT_KEY = "prachar-chat-v1";
+function saveChat(){
+  try{ const html = log.innerHTML; if(html.length<300000) localStorage.setItem(CHAT_KEY, JSON.stringify({html, apiMsgs:(typeof apiMsgs!=="undefined"?apiMsgs.slice(-40):[]), turns})); }catch(_){}
+}
+function restoreChat(){
+  try{ const j = JSON.parse(localStorage.getItem(CHAT_KEY)||"null"); if(!j||!j.html) return false;
+    log.innerHTML = j.html; if(Array.isArray(j.apiMsgs)) apiMsgs = j.apiMsgs; if(Array.isArray(j.turns)) turns = j.turns;
+    log.querySelectorAll(".thinking").forEach(el=>{ if(/Thinking|Working/.test(el.textContent)) el.textContent="(interrupted by a page reload)"; });
+    log.scrollTop = log.scrollHeight; $("chips").hidden = true; return true; }catch(_){ return false; }
+}
+// last-chance save when the tab is closed or reloaded
+window.addEventListener("pagehide", ()=>{
+  if(!persistOn || !stateReady) return; const snap = snapshot(); if(snap===lastSaved) return;
+  try{ fetch("/api/state",{method:"PUT",keepalive:true,headers:{"content-type":"application/json","x-access-code":(typeof accessCode!=="undefined"?accessCode:"")},body:JSON.stringify({state:JSON.parse(snap),rev:stateRev})}); }catch(_){}
+});
+function clearChat(){ try{ localStorage.removeItem(CHAT_KEY); }catch(_){} }
 
 // ---------- rendering ----------
 const $ = id => document.getElementById(id);
@@ -355,36 +448,49 @@ function poster(c, kind){
   const p = S.products.find(x=>x.sku===c.skus[0]); const o = c.offerSnap;
   return `<div class="poster" role="img" aria-label="Offer poster for ${esc(p.name)}">
     ${o?`<div class="tag">${o.percent}% OFF</div>`:`<div class="tag">NEW</div>`}
-    <div><div class="hl">${esc(c.headline)}</div><div class="pn">${esc(p.brand)} ${esc(p.name)} · ${esc(p.fit)}</div></div>
+    <div><div class="hl">${esc(c.headline)}</div><div class="pn">${esc(pname(p))} · ${esc(p.fit)}</div></div>
     <div class="pr">${o?`<b>${inr(o.price)}</b><s>${inr(o.was)}</s>`:`<b>${inr(p.price)}</b>`}</div>
     <div class="ft"><span>${esc(BIZ.short)} · ${esc(BIZ.phone)}</span><span>${o?"Till "+fmtDate(new Date(o.until)):""}</span></div>
   </div>`;
 }
+// With WhatsApp connected, customers get Meta's approved offer template (not free text): show exactly that
+const igHandle = () => BIZ.name==="Sri Venkateswara Auto Spares" ? "svas.autospares" : String(BIZ.name).toLowerCase().replace(/[^a-z0-9]+/g,".").replace(/^\.|\.$/g,"").slice(0,24);
+function liveTemplateText(c){
+  if(!LIVE || !LIVE.offer || !c.offerSnap) return null;
+  const lang = {English:"en",Hindi:"hi",Telugu:"te"}[c.language] || "en", body = LIVE.offer.body[lang] || LIVE.offer.body.en;
+  const p = S.products.find(x=>x.sku===c.skus[0]); if(!p) return null;
+  const o = c.offerSnap, vals = [BIZ.name, (pname(p)+" for "+p.fit).slice(0,60), Math.round(o.price).toLocaleString("en-IN"), Math.round(o.was).toLocaleString("en-IN"), String(o.percent), fmtDate(new Date(o.until)), BIZ.phone];
+  return { text: body.replace(/\{\{(\d)\}\}/g, (_,n)=>vals[n-1]), buttons: LIVE.offer.buttons[lang] || LIVE.offer.buttons.en, langName: {en:"English",hi:"Hindi",te:"Telugu"}[lang] };
+}
 function previewBlocks(c){
   const out = [];
-  if(c.channels.includes("whatsapp")) out.push(`<div class="pv"><div class="pv-l"><span class="sw" style="background:var(--wa)"></span>WhatsApp · ${AUDIENCES.find(a=>a.id===c.audience).optIn} opted-in</div>
-    <div class="wa"><div class="wa-b">${poster(c)}${esc(c.whatsapp)}<div class="wa-t">10:30 am</div></div></div></div>`);
+  if(c.channels.includes("whatsapp")){
+    const t = liveTemplateText(c);
+    out.push(`<div class="pv"><div class="pv-l"><span class="sw" style="background:var(--wa)"></span>WhatsApp · ${waCount(c.audience)} opted-in${LIVE?" on your number":""}</div>
+    <div class="wa"><div class="wa-b">${t?esc(t.text):poster(c)+esc(c.whatsapp)}<div class="wa-t">10:30 am</div></div>${t?`<div class="wa-btns">${t.buttons.map(x=>`<span>${esc(x)}</span>`).join("")}</div>`:""}</div>
+    ${t?`<div class="tplnote">Meta's approved offer template in ${esc(t.langName)}: the exact text customers get. Posters on WhatsApp come later.</div>`:""}</div>`);
+  }
   if(c.channels.includes("facebook")) out.push(`<div class="pv"><div class="pv-l"><span class="sw" style="background:var(--fb)"></span>Facebook page${c.adBudget?" · boosted":""}</div>
-    <div class="fb"><div class="post-h"><span class="av">SV</span><div><b>${esc(BIZ.name)}</b><small>${c.adBudget?"Sponsored":"Just now"} · ${esc(BIZ.area)}</small></div></div>
-    <div class="post-t">${esc(c.facebook)}</div>${poster(c)}${c.adBudget?`<div class="boost">Ad: ${inr(c.adBudget)}/day × ${c.adDays} days · 15 km around Kukatpally · Send WhatsApp message button</div>`:""}
+    <div class="fb"><div class="post-h"><span class="av">${esc(String(BIZ.short||"").slice(0,2))}</span><div><b>${esc(BIZ.name)}</b><small>${c.adBudget?"Sponsored":"Just now"} · ${esc(BIZ.area)}</small></div></div>
+    <div class="post-t">${esc(c.facebook)}</div>${poster(c)}${c.adBudget?`<div class="boost">Ad: ${inr(c.adBudget)}/day × ${c.adDays} days · 15 km around ${esc(BIZ.area.split(",")[0])} · Send WhatsApp message button</div>`:""}
     <div class="post-f"><span>Like</span><span>Comment</span><span>WhatsApp</span></div></div></div>`);
   if(c.channels.includes("instagram")) out.push(`<div class="pv"><div class="pv-l"><span class="sw" style="background:linear-gradient(45deg,var(--ig1),var(--ig2),var(--ig3))"></span>Instagram${c.adBudget?" · boosted":""}</div>
-    <div class="ig"><div class="post-h"><span class="av">SV</span><div><b>svas.autospares</b><small>${c.adBudget?"Sponsored":"Hyderabad"}</small></div></div>${poster(c)}
-    <div class="post-t"><b>svas.autospares</b> ${esc(c.instagram)}</div></div></div>`);
+    <div class="ig"><div class="post-h"><span class="av">${esc(String(BIZ.short||"").slice(0,2))}</span><div><b>${esc(igHandle())}</b><small>${c.adBudget?"Sponsored":esc(BIZ.area.split(",").pop().trim())}</small></div></div>${poster(c)}
+    <div class="post-t"><b>${esc(igHandle())}</b> ${esc(c.instagram)}</div></div></div>`);
   return out.join("");
 }
 function campCard(c){
   const pill = {draft:"Draft",sending:"Sending…",sent:"Sent",discarded:"Discarded"}[c.status];
   const costLine = [];
-  if(c.channels.includes("whatsapp")){ const a=AUDIENCES.find(x=>x.id===c.audience); costLine.push(`WhatsApp: ${a.optIn} × ${inr2(WA_RATE)} + GST ≈ <b>${inr(waCost(c.audience))}</b>`); }
+  if(c.channels.includes("whatsapp")){ const a=AUDIENCES.find(x=>x.id===c.audience); costLine.push(`WhatsApp: ${waCount(c.audience)} × ~${inr2(WA_RATE)} + GST ≈ <b>${inr(waCost(c.audience))}</b>`); }
   if(c.adBudget) costLine.push(`Meta ads: ${inr(c.adBudget)} × ${c.adDays} days + GST ≈ <b>${inr(c.adBudget*c.adDays*(1+GST))}</b>`);
   if(!c.adBudget && (c.channels.includes("facebook")||c.channels.includes("instagram"))) costLine.push("Page posts: free");
   let foot = "";
   if(c.status==="draft") foot = `<div class="camp-f"><div class="cost">${costLine.join(" · ")}<br>Total ≈ <b>${inr(estCost(c))}</b></div>
       <button class="btn sec" data-discard="${c.id}" type="button">Discard</button><button class="btn pri" data-approve="${c.id}" type="button">Approve &amp; send</button></div>`;
   else if(c.status==="sending") foot = `<div class="camp-f"><div class="cost">Sending to ${c.channels.join(", ")}…</div></div>`;
-  let res = "";
-  if(c.delivery){
+  let res = c.live ? liveResults(c) : "";
+  if(c.delivery && !c.live){
     const cells = [];
     if(c.delivery.whatsapp) cells.push(["WA delivered", c.delivery.whatsapp.delivered+" / "+c.delivery.whatsapp.sent]);
     if(c.delivery.facebook) cells.push(["FB reach", c.delivery.facebook.reach.toLocaleString("en-IN")]);
@@ -397,36 +503,73 @@ function campCard(c){
       <div class="simnote">${c.example?"Example campaign from earlier in the season. ":""}Simulated delivery and results · attribution: promoted SKU bought within 14 days.</div>`;
   }
   return `<article class="camp${S.flash===c.id?" flash":""}" id="card-${c.id}">
-    <div class="camp-h"><h3>${esc(c.name)}<div class="meta"><span class="sku">${c.id}</span><span>${esc(audName(c.audience))}</span><span>${esc(c.language)}</span><span>${c.channels.map(x=>x[0].toUpperCase()+x.slice(1)).join(" + ")}</span>${c.sentAt?`<span>Sent ${fmtDate(new Date(c.sentAt))}</span>`:""}</div></h3><span class="pill ${c.status}">${pill}</span></div>
+    <div class="camp-h"><h3>${esc(c.name)}<div class="meta"><span class="sku">${c.id}</span><span>${esc(audName(c.audience))}</span><span>${esc(c.language)}</span><span>${c.channels.map(cap).join(" + ")}</span>${c.sentAt?`<span>Sent ${fmtDate(new Date(c.sentAt))}</span>`:""}</div></h3><span class="pill ${c.status}">${pill}</span></div>
     ${c.status!=="discarded"?`<div class="previews">${previewBlocks(c)}</div>`:""}${foot}${res}</article>`;
+}
+function liveResults(c){
+  const w = (c.delivery&&c.delivery.whatsapp)||{}, ls = c.liveStats||{};
+  const cells = [["WA sent", w.sent||0],["Delivered", w.delivered||0],["Read", w.read||0],["Replies", ls.replies||0],["ORDER replies", ls.orders||0],["Opted out", ls.optOuts||0]];
+  if(w.failed) cells.push(["Failed", w.failed]);
+  if(c.delivery&&c.delivery.facebook) cells.push(["FB reach*", c.delivery.facebook.reach.toLocaleString("en-IN")]);
+  if(c.delivery&&c.delivery.instagram) cells.push(["IG reach*", c.delivery.instagram.reach.toLocaleString("en-IN")]);
+  const social = c.channels.some(x=>x!=="whatsapp");
+  return `<div class="results">${cells.map(([k,v])=>`<div class="r"><span>${k}</span><b>${v}</b></div>`).join("")}</div>
+    <div class="simnote">${w.sim?"WhatsApp simulation (no real messages) · ":"Live WhatsApp delivery from Meta · "}updates every 20 seconds${social?" · *Facebook and Instagram are still simulated":""}${w.skipped?` · ${w.skipped} waiting for tomorrow's limit`:""}.</div>`;
+}
+function customerTable(){
+  const q=(S.custQ||"").toLowerCase().trim();
+  const all=DATASET.customers.filter(c=>c.phone && (!q || (c.name+" "+c.locality+" "+c.type).toLowerCase().includes(q))).sort((a,b)=>b.spend-a.spend);
+  const rows=all.slice(0,100);
+  const T={garage:"Garage",retailer:"Parts shop",walkin:"Walk-in"};
+  return `<div><h2 class="sec" style="font-size:18px">Customers</h2><div class="sampletag">Synthetic names, addresses and phones (phones start with 5, so they can't reach real people) · buying history from the real data</div></div>
+  <input id="custQ" class="filter" type="search" placeholder="Filter by name, locality or type" value="${esc(S.custQ||"")}" aria-label="Filter customers">
+  <div class="sampletag">Showing ${rows.length} of ${all.length} · highest spend first</div>
+  <div class="tablewrap"><table><thead><tr><th>Customer</th><th>Type</th><th>Locality</th><th class="num">Orders</th><th class="num">Spend</th><th>Last order</th><th>WhatsApp</th></tr></thead><tbody>
+  ${rows.map(c=>`<tr><td><b>${esc(c.name)}</b><div class="sku">${esc(c.customer_id)} · ${esc(c.phone)}</div></td><td>${T[c.type]||c.type}${c.lapsed?` <span class="flag dead">lapsed</span>`:""}</td><td>${esc(c.locality)} <span class="sku">${esc(c.pincode)}</span></td>
+   <td class="num">${c.orders}</td><td class="num">${inr(c.spend)}</td><td class="sku">${esc(c.last_order)}</td><td>${c.whatsapp_opt_in?`<span class="flag fast">opted in</span>`:`<span class="fit">no</span>`}</td></tr>`).join("")}
+  </tbody></table></div>`;
 }
 function renderPane(){
   if(S.tab==="camp"){
     const list = S.campaigns.filter(c=>c.status!=="discarded");
-    pane.innerHTML = `<div><h2 class="sec">Campaigns</h2><div class="sampletag">Nothing is really sent in this demo. Drafts need your approval.</div></div>` +
-      (list.length? list.map(campCard).join("") : `<div class="empty">No campaigns yet. Ask Prachar to create one.</div>`);
+    pane.innerHTML = `<div><h2 class="sec">Campaigns</h2><div class="sampletag">${LIVE ? (LIVE.sim ? "WhatsApp simulation: approved drafts go through the full flow, but no real message is sent." : `WhatsApp is live: approved drafts go to your ${LIVE.optedIn} opted-in customers. Facebook and Instagram are still simulated.`) : "Nothing is really sent in this demo. Drafts need your approval."}</div></div>` +
+      (list.length? list.map(campCard).join("") : `<div class="empty">No campaigns yet. Ask ${esc(ANAME)} to create one.</div>`);
   } else if(S.tab==="cat"){
-    pane.innerHTML = `<div><h2 class="sec">Stock &amp; offers</h2><div class="sampletag">Read from the inventory system · trade prices include 18% GST · margin floor ${BIZ.minMargin}%</div></div>
-    <div class="tablewrap"><table><thead><tr><th>Part</th><th>HSN</th><th class="num">MRP</th><th class="num">Trade price</th><th class="num">Stock</th><th class="num">Margin</th><th>Status</th></tr></thead><tbody>
-    ${S.products.map(p=>{const o=activeOffer(p);const price=o?o.price:p.price;const m=Math.round((price-p.cost)/price*100);
-      return `<tr><td><b>${esc(p.brand)} ${esc(p.name)}</b>${o?`<span class="offer">${o.percent}% OFF</span>`:""}<div class="fit">${esc(p.fit)}</div><div class="sku">${p.sku}</div></td><td class="sku">${p.hsn}</td>
-      <td class="num">${inr(p.mrp)}</td><td class="num">${o?`<b>${inr(o.price)}</b><br><s class="fit">${inr(p.price)}</s><div class="fit">till ${fmtDate(o.until)}</div>`:inr(p.price)}</td>
+    const q=(S.stockQ||"").toLowerCase().trim();
+    const all=S.products.filter(p=>!q || (p.sku+" "+p.name+" "+p.fit+" "+(p.brand||"")).toLowerCase().includes(q))
+      .sort((a,b)=>(activeOffer(b)?1:0)-(activeOffer(a)?1:0) || b.stock*b.cost-a.stock*a.cost);
+    const rows=all.slice(0,150);
+    pane.innerHTML = `<div><h2 class="sec">Stock &amp; offers</h2><div class="sampletag">${DATASET?`${S.products.length} parts from the inventory system (anonymised test data, as of ${fmtDate(new Date(DATASET.asOf))})`:"Read from the inventory system"} · margin floor ${BIZ.minMargin}%</div></div>
+    <input id="stockQ" class="filter" type="search" placeholder="Filter by part, vehicle or SKU (e.g. CDI Activa)" value="${esc(S.stockQ||"")}" aria-label="Filter parts">
+    <div class="sampletag">Showing ${rows.length} of ${all.length} · offers first, then highest stock value</div>
+    <div class="tablewrap"><table><thead><tr><th>Part</th><th>HSN</th><th class="num">Trade price</th><th class="num">Stock</th><th class="num">Margin</th><th>Status</th></tr></thead><tbody>
+    ${rows.map(p=>{const o=activeOffer(p);const price=o?o.price:p.price;const m=Math.round((price-p.cost)/price*100);
+      return `<tr><td><b>${esc(pname(p))}</b>${o?`<span class="offer">${o.percent}% OFF</span>`:""}<div class="fit">${esc(p.fit)}</div><div class="sku">${p.sku}</div></td><td class="sku">${p.hsn}</td>
+      <td class="num">${o?`<b>${inr(o.price)}</b><br><s class="fit">${inr(p.price)}</s><div class="fit">till ${fmtDate(o.until)}</div>`:inr(p.price)}</td>
       <td class="num">${p.stock.toLocaleString("en-IN")}</td><td class="num">${m}%</td>
-      <td>${p.lastSale>=90?`<span class="flag dead">No sale ${p.lastSale}d</span>`:p.fast?`<span class="flag fast">Fast mover</span>`:""}</td></tr>`;}).join("")}
+      <td>${p.lastSale>=90?`<span class="flag dead">${p.neverSold?"No sale in "+p.lastSale+"d":"No sale "+p.lastSale+"d"}</span>`:p.fast?`<span class="flag fast">Fast mover${p.sold30?` · ${p.sold30}/30d`:""}</span>`:""}</td></tr>`;}).join("")}
     </tbody></table></div>`;
   } else {
     pane.innerHTML = `<div><h2 class="sec">Audiences</h2><div class="sampletag">Built from the customer list · only opted-in numbers get WhatsApp marketing</div></div>
     <div class="aud">${AUDIENCES.map(a=>`<div class="aud-c"><h4>${esc(a.name)}</h4><dl><dt>Customers</dt><dd>${a.total}</dd><dt>WhatsApp opted-in</dt><dd>${a.optIn}</dd><dt>Cost per blast</dt><dd>${inr(waCost(a.id))}</dd></dl><div class="fit" style="margin-top:6px">${esc(a.note)}</div></div>`).join("")}
-    <div class="aud-c"><h4>Social pages</h4><dl><dt>Facebook followers</dt><dd>${SOCIAL.facebook.followers.toLocaleString("en-IN")}</dd><dt>Instagram followers</dt><dd>${SOCIAL.instagram.followers.toLocaleString("en-IN")}</dd></dl><div class="fit" style="margin-top:6px">Page posts are free; boosted posts use Meta ads.</div></div></div>`;
+    <div class="aud-c"><h4>Social pages</h4><dl><dt>Facebook followers</dt><dd>${SOCIAL.facebook.followers.toLocaleString("en-IN")}</dd><dt>Instagram followers</dt><dd>${SOCIAL.instagram.followers.toLocaleString("en-IN")}</dd></dl><div class="fit" style="margin-top:6px">Page posts are free; boosted posts use Meta ads.</div></div></div>
+    ${DATASET&&DATASET.customers?customerTable():""}`;
   }
   if(S.flash){ const f=S.flash; setTimeout(()=>{ const el=$("card-"+f); if(el) el.scrollIntoView({block:"nearest",behavior:"smooth"}); },30); S.flash=null; }
 }
 function render(){
   document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected", String(b.dataset.tab===S.tab)));
-  $("cCamp").textContent = S.campaigns.filter(c=>c.status==="draft").length || S.campaigns.filter(c=>c.status!=="discarded").length;
+  const nDraft = S.campaigns.filter(c=>c.status==="draft").length, nAll = S.campaigns.filter(c=>c.status!=="discarded").length;
+  $("cCamp").textContent = nDraft ? `${nDraft} draft${nDraft>1?"s":""} · ${nAll} total` : `${nAll} total`;
   $("cOff").textContent = S.products.filter(p=>activeOffer(p)).length;
   renderPane();
+  scheduleSave();
 }
+pane.addEventListener("input", e=>{
+  const id=e.target.id; if(id!=="stockQ" && id!=="custQ") return;
+  S[id]=e.target.value; const pos=e.target.selectionStart; renderPane();
+  const el=$(id); if(el){ el.focus(); try{ el.setSelectionRange(pos,pos); }catch(_){} }
+});
 document.querySelector(".tabs").addEventListener("click", e=>{ const b=e.target.closest("button[data-tab]"); if(b){ S.tab=b.dataset.tab; render(); }});
 pane.addEventListener("click", e=>{
   const a = e.target.closest("[data-approve]"), d = e.target.closest("[data-discard]");
@@ -435,25 +578,29 @@ pane.addEventListener("click", e=>{
 function discard(id){ const c=S.campaigns.find(x=>x.id===id); if(!c) return; c.status="discarded"; note(`Draft ${id} discarded.`); render(); }
 function approve(id){
   const c=S.campaigns.find(x=>x.id===id); if(!c||c.status!=="draft") return;
-  c.status="sending"; render();
-  setTimeout(()=>{
-    const a = AUDIENCES.find(x=>x.id===c.audience); c.delivery={};
-    if(c.channels.includes("whatsapp")){ const del=Math.round(a.optIn*0.955); c.delivery.whatsapp={sent:a.optIn,delivered:del,cost:del*WA_RATE*(1+GST)}; }
-    const boost = c.adBudget*c.adDays;
-    if(c.channels.includes("facebook")) c.delivery.facebook={reach:Math.round(SOCIAL.facebook.followers*0.16 + boost*6.5)};
-    if(c.channels.includes("instagram")) c.delivery.instagram={reach:Math.round(SOCIAL.instagram.followers*0.3 + boost*5)};
-    c.status="sent"; c.sentAt=new Date(); render();
-    note(`${c.id} sent (simulated) on ${c.channels.join(", ")}. Tracking orders…`);
-    setTimeout(()=>{
-      const del = c.delivery.whatsapp?c.delivery.whatsapp.delivered:0;
-      const socialLeads = Math.round(((c.delivery.facebook?.reach||0)+(c.delivery.instagram?.reach||0))*0.004);
-      const replies = Math.round(del*0.08)+socialLeads, orders = Math.max(1,Math.round(replies*0.45));
-      const p = S.products.find(x=>x.sku===c.skus[0]); const unit = c.offerSnap?c.offerSnap.price:p.price;
-      const units = Math.min(p.stock, orders*(p.price>2000?1:4));
-      c.results={replies,orders,units,sales:units*unit}; render();
-      note(`${c.id}: ${orders} orders, ${inr(units*unit)} in sales so far (simulated).`);
-    }, 3500);
-  }, 1400);
+  c.status="sending"; render(); clearTimeout(saveTimer); saveNow();
+  setTimeout(()=>completeSend(c), 1400);
+}
+function completeSend(c, quiet){
+  const a = AUDIENCES.find(x=>x.id===c.audience); c.delivery={};
+  if(c.channels.includes("whatsapp")){ const del=Math.round(a.optIn*0.955); c.delivery.whatsapp={sent:a.optIn,delivered:del,cost:del*WA_RATE*(1+GST)}; }
+  const boost = c.adBudget*c.adDays;
+  if(c.channels.includes("facebook")) c.delivery.facebook={reach:Math.round(SOCIAL.facebook.followers*0.16 + boost*6.5)};
+  if(c.channels.includes("instagram")) c.delivery.instagram={reach:Math.round(SOCIAL.instagram.followers*0.3 + boost*5)};
+  c.status="sent"; c.sentAt=new Date();
+  if(quiet){ addResults(c,true); return; }
+  render(); note(`${c.id} sent (simulated) on ${c.channels.join(", ")}. Tracking orders…`);
+  setTimeout(()=>addResults(c), 3500);
+}
+function addResults(c, quiet){
+  const del = c.delivery&&c.delivery.whatsapp?c.delivery.whatsapp.delivered:0;
+  const socialLeads = Math.round(((c.delivery?.facebook?.reach||0)+(c.delivery?.instagram?.reach||0))*0.004);
+  const replies = Math.round(del*0.08)+socialLeads, orders = Math.max(1,Math.round(replies*0.45));
+  const p = S.products.find(x=>x.sku===c.skus[0]); const unit = c.offerSnap?c.offerSnap.price:p.price;
+  const units = Math.min(p.stock, orders*(p.price>2000?1:4));
+  c.results={replies,orders,units,sales:units*unit};
+  if(quiet) return;
+  render(); note(`${c.id}: ${orders} orders, ${inr(units*unit)} in sales so far (simulated).`);
 }
 
 // ---------- chat ----------
@@ -469,10 +616,10 @@ function mdLite(t){
 }
 function addMsg(role, html){
   const el=document.createElement("div"); el.className="msg "+role;
-  el.innerHTML = role==="ai" ? `<div class="who">Prachar</div><div class="acts"></div><div class="body">${html||""}</div>` : html;
+  el.innerHTML = role==="ai" ? `<div class="who">${esc(ANAME)}</div><div class="acts"></div><div class="body">${html||""}</div>` : html;
   log.appendChild(el); log.scrollTop=log.scrollHeight; return el;
 }
-function note(t){ addMsg("note", esc(t)); }
+function note(t){ addMsg("note", esc(t)); saveChat(); }
 function addAct(bubble, label, cls){ const a=document.createElement("span"); a.className="act "+(cls||""); a.textContent=label; bubble.querySelector(".acts").appendChild(a); log.scrollTop=log.scrollHeight; return a; }
 
 function stateSummary(){
@@ -480,14 +627,14 @@ function stateSummary(){
   const camps = S.campaigns.filter(c=>c.status!=="discarded").slice(0,6).map(c=>`${c.id} "${c.name}" [${c.status}] ${c.channels.join("+")} → ${c.audience}`);
   return `Active offers: ${offers.join("; ")||"none"}\nCampaigns: ${camps.join("; ")||"none"}`;
 }
-const RULES = () => `You are Prachar, the AI CMO built into an Indian auto-parts distributor's inventory platform. You are chatting with the owner of ${BIZ.name}, ${BIZ.area}. They sell to garages, parts shops and fleet owners. Today is ${TODAY.toDateString()}.
+const RULES = () => `You are ${ANAME}, the AI CMO built into an Indian auto-parts distributor's inventory platform. You are chatting with the owner of ${BIZ.name}, ${BIZ.area}. They sell to garages, mechanics, parts shops and walk-in buyers. Today is ${TODAY.toDateString()}.
 
 How to work:
 - Reply in the owner's language (English, Hindi, Hinglish or Telugu). Keep replies short: 2–5 lines, plain words, rupees with Indian digit grouping (₹1,45,000).
 - Find products with search_products before changing anything. If several match and the owner's words don't pick one, ask which (list SKU + name). Don't guess.
 - apply_discount changes the trade price for the offer period; the owner's instruction is their approval. If the margin guard blocks it, tell them the maximum allowed and ask.
 - For campaigns call create_campaign_draft with copy for each channel requested. You NEVER send: the owner reviews the draft in the Campaigns panel and taps "Approve & send". Say that clearly.
-- If the owner names no channel, use WhatsApp only and mention Facebook/Instagram are available. If no audience is given, choose the best fit (garages for workshop parts, fleets for commercial-vehicle parts, retailers for counter items) and say which.
+- If the owner names no channel, use WhatsApp only and mention Facebook/Instagram are available. If no audience is given, choose the best fit (garages for workshop parts, retailers for bulk stock, lapsed for win-back offers) and say which.
 - To change an existing draft, create a new draft with replaces_id.
 - Copy rules: WhatsApp ≤ 600 characters: offer first, product + vehicle fit, old and new price, valid-till date, how to order ("Reply ORDER or call ${BIZ.phone}"), last line "Reply STOP to opt out". Facebook: 2–4 lines. Instagram: 1–3 lines + 3–6 hashtags (#Hyderabad #AutoParts …). poster_headline: max 5 words. Write in the language the owner asks for (default English; Hindi/Telugu in native script when asked). No fake urgency, no claims you can't back.
 - Paid boosts (ad_budget_per_day_inr) only if the owner asks for ads/boost or gives a budget.
@@ -500,8 +647,8 @@ ${stateSummary()}`;
 function tools(bubble){
   const wrap = (name, label, fn) => async (input, ctx) => {
     const chip = addAct(bubble, label(input));
-    try { const r = await fn(input); chip.classList.add("ok"); return r; }
-    catch(e){ chip.classList.add("err"); throw e; }
+    try { const r = await fn(input); chip.classList.add("ok"); console.log("[tool]", name, input, "→", r); return r; }
+    catch(e){ chip.classList.add("err"); chip.title = e.message; chip.textContent += " ✗"; console.warn("[tool]", name, input, "✗", e.message); throw e; }
   };
   return [
     {name:"search_products",description:"Search the distributor's catalogue by product, brand, vehicle or SKU. Returns up to 6 matches with trade price, MRP, stock, margin, any active offer and days since last sale.",
@@ -535,7 +682,7 @@ function tools(bubble){
      execute: wrap("status", i=>"status "+i.id, i=>campaignStatus(String(i.id)))}
   ];
 }
-const ERR = {rate_limited:"Too many requests just now. Try again in a minute.",session_expired:"Your session expired. Sign in again to keep chatting.",refused:"I can't help with that request.",upstream_error:"The connection dropped. Send your message again.",empty_completion:"I didn't get an answer. Try rephrasing.",prompt_too_large:"The conversation got too long. Tap Reset demo to start fresh."};
+const ERR = {local_limit:"You've sent a lot of messages in the last 10 minutes. Wait a few minutes.",ai_busy:"The AI is busy right now.",daily_limit:"Today's AI limit for this demo is used up.",rate_limited:"Too many requests just now. Try again in a minute.",session_expired:"Your session expired. Sign in again to keep chatting.",refused:"I can't help with that request.",upstream_error:"The connection dropped. Send your message again.",empty_completion:"I didn't get an answer. Try rephrasing.",prompt_too_large:"The conversation got too long. Tap Reset demo to start fresh."};
 
 
 // ---- server mode (Cloud Run backend holds the API key) ----
@@ -558,10 +705,9 @@ async function askServer(text){
   try{
     for(let round=0; round<7; round++){
       const r = await fetch("/api/chat",{method:"POST",signal:ctl.signal,headers:{"content-type":"application/json","x-access-code":accessCode},
-        body:JSON.stringify({state:stateSummary(), messages:apiMsgs})});
+        body:JSON.stringify({state:stateSummary(), messages:apiMsgs, voice:VM.on})});
       if(r.status===401){ apiMsgs.pop(); awaitingCode=true; body.innerHTML="<p>This demo needs an access code. Type it below.</p>"; return; }
-      if(r.status===429){ body.innerHTML = (shown?mdLite(shown):"")+`<p class="thinking">${esc(ERR.rate_limited)}</p>`; apiMsgs.pop(); return; }
-      if(!r.ok) throw new Error("upstream");
+      if(!r.ok){ const j = await r.json().catch(()=>({})); const e = new Error(j.error||"upstream"); e.http=r.status; e.code=j.error; throw e; }
       const data = await r.json();
       const content = data.content||[];
       apiMsgs.push({role:"assistant",content});
@@ -584,7 +730,13 @@ async function askServer(text){
     if(apiMsgs.length && apiMsgs[apiMsgs.length-1].role==="user") apiMsgs.push({role:"assistant",content:[{type:"text",text:shown||"Done."}]});
   }catch(e){
     if(e && e.name==="AbortError"){ body.innerHTML = (shown?mdLite(shown):"")+"<p class='thinking'>Stopped.</p>"; }
-    else body.innerHTML = (shown?mdLite(shown):"")+`<p class="thinking">${esc(ERR.upstream_error)}</p>`;
+    else if(!shown && !bubble.querySelector(".act")){
+      // nothing happened yet: answer this message with the scripted demo instead of an error
+      bubble.remove(); apiMsgs.length = 0;
+      note("The AI is busy right now, so this reply uses demo mode.");
+      offline(text);
+    }
+    else body.innerHTML = (shown?mdLite(shown):"")+`<p class="thinking">${esc(ERR[e&&e.code]||(e&&e.http===429?ERR.rate_limited:ERR.upstream_error))} Send the same message again to continue.</p>`;
     // drop the broken tail back to the last clean assistant turn
     while(apiMsgs.length && !(apiMsgs[apiMsgs.length-1].role==="assistant" && !apiMsgs[apiMsgs.length-1].content.some?.(b=>b.type==="tool_use"))) apiMsgs.pop();
   }finally{ setBusy(false); }
@@ -619,12 +771,13 @@ function offline(text, bubble){
   try{
     if(/promote|suggest|what should|dead stock|insight/.test(t) && !/%/.test(t)){
       addAct(bubble,"insights","ok"); const i=insights();
-      say(mdLite(`**Worth promoting this week**\n\n${i.dead_stock.map(d=>`- ${d.name} (${d.fits}): ${d.stock_units} units, no sale in ${d.days_since_last_sale} days`).join("\n")}\n\n58 lapsed garages are opted in on WhatsApp. Try: "15% off on Ape brake shoes, WhatsApp to fleets".`)); return;
+      const top = i.dead_stock_top10_by_value.slice(0,5), f0 = i.fast_movers[0];
+      say(mdLite(`**Worth promoting this week** (slow stock with the most money tied up)\n\n${top.map(d=>`- ${d.name} (${d.fits}): ${d.stock_units} units, ${d.stock_value_at_cost} at cost, no sale in ${d.days_since_last_sale}${d.never_sold_in_data_window?"+":""} days`).join("\n")}\n\n${i.lapsed_customers.opted_in} lapsed regulars are opted in on WhatsApp.${top[0]?` Try: "15% off on ${top[0].name} for ${top[0].fits}, WhatsApp to garages".`:""}${f0?` Fast mover right now: ${f0.name} (${f0.fits}).`:""}`)); return;
     }
     const pm = t.match(/(\d{1,2})\s*%/);
     const q = (t.match(/(?:off|discount)\s+(?:on|for)?\s*(.+?)(?:\s+(?:and|&|then|,|send|to|for\s+\d|valid|till|campaign)\b|$)/)||[])[1];
     const before = pm ? t.split(pm[0])[0].replace(/apply|give|put/g," ") : "";
-    if(!pm || (!q && !before.trim())){ say(mdLite(`In demo mode I understand commands like:\n\n- 20% off on Swift brake pads and send to garages on WhatsApp and Instagram\n- 15% off on Tata Ace shock absorbers, WhatsApp to fleets\n- What should I promote this week?`)); return; }
+    if(!pm || (!q && !before.trim())){ say(mdLite(`In demo mode I understand commands like:\n\n${SUGG.filter(x=>/%/.test(x)).slice(0,2).map(x=>"- "+x).join("\n")}\n- What should I promote this week?`)); return; }
     const useBefore = /[a-z]{3,}/.test(before);
     const qq = useBefore ? before : q;
     let found = findProducts(qq);
@@ -637,52 +790,234 @@ function offline(text, bubble){
     catch(e){ dAct.classList.add("err"); say(mdLite(e.message)); return; }
     let ch = []; if(/whats|wa\b/.test(t)) ch.push("whatsapp"); if(/facebook|\bfb\b/.test(t)) ch.push("facebook"); if(/insta|\big\b/.test(t)) ch.push("instagram");
     const wantsCampaign = ch.length || /campaign|send|blast|post/.test(t);
-    if(!wantsCampaign){ say(mdLite(`Done. **${p.brand} ${p.name}** (${p.fit}) is now **${inr(r.offer_price)}** (was ${inr(r.old_price)}) till ${r.valid_until}. Margin after offer: ${r.margin_after_pct}%.\n\nWant me to send it to customers on WhatsApp, Facebook or Instagram?`)); return; }
+    if(!wantsCampaign){ say(mdLite(`Done. **${pname(p)}** (${p.fit}) is now **${inr(r.offer_price)}** (was ${inr(r.old_price)}) till ${r.valid_until}. Margin after offer: ${r.margin_after_pct}%.\n\nWant me to send it to customers on WhatsApp, Facebook or Instagram?`)); return; }
     if(!ch.length) ch=["whatsapp"];
-    let aud = /fleet|transport/.test(t)?"fleets":/retail|shop/.test(t)?"retailers":/lapsed|inactive/.test(t)?"lapsed":/all|everyone/.test(t)?"all":(p.seg==="cv"?"fleets":"garages");
-    const wa = `${r.percent}% OFF – ${p.brand} ${p.name}\nFits: ${p.fit}\nNow ${inr(r.offer_price)} (was ${inr(r.old_price)}) · Offer till ${r.valid_until}\n${p.stock} units ready in Kukatpally godown.\nReply ORDER or call ${BIZ.phone}.\nReply STOP to opt out.`;
-    const fb = `${r.percent}% off ${p.brand} ${p.name} for ${p.fit}.\nGarage price ${inr(r.offer_price)} (was ${inr(r.old_price)}), till ${r.valid_until}.\nWhatsApp us on ${BIZ.phone} to order.`;
-    const ig = `${p.brand} ${p.name} for ${p.fit} – now ${inr(r.offer_price)}. Offer till ${r.valid_until}. #Hyderabad #AutoParts #Kukatpally #GarageLife #${p.brand.split(" ")[0]}`;
+    let aud = /retail|shop|bulk/.test(t)?"retailers":/walk.?in|counter/.test(t)?"walkin":/lapsed|inactive/.test(t)?"lapsed":/all|everyone/.test(t)?"all":"garages";
+    const wa = `${r.percent}% OFF – ${pname(p)}\nFits: ${p.fit}\nNow ${inr(r.offer_price)} (was ${inr(r.old_price)}) · Offer till ${r.valid_until}\n${p.stock} units ready in our ${BIZ.area.split(",")[0]} godown.\nReply ORDER or call ${BIZ.phone}.\nReply STOP to opt out.`;
+    const fb = `${r.percent}% off ${pname(p)} for ${p.fit}.\nGarage price ${inr(r.offer_price)} (was ${inr(r.old_price)}), till ${r.valid_until}.\nWhatsApp us on ${BIZ.phone} to order.`;
+    const ig = `${pname(p)} for ${p.fit} – now ${inr(r.offer_price)}. Offer till ${r.valid_until}. #Hyderabad #AutoParts #BikeParts #${(p.fit||p.brand||"Bike").split(/[ /(]/)[0].replace(/[^A-Za-z0-9]/g,"")}`;
     const dA = addAct(bubble,"draft campaign → "+ch.join("+"));
     const d = createDraft({name:`${r.percent}% off ${p.name} – ${p.fit.split("(")[0].trim()}`,skus:[p.sku],audience_id:aud,channels:ch,language:"English",poster_headline:`${p.name}`,whatsapp_message:wa,facebook_post:fb,instagram_caption:ig});
     dA.classList.add("ok");
-    say(mdLite(`Done. **${p.brand} ${p.name}** is now **${inr(r.offer_price)}** (was ${inr(r.old_price)}) till ${r.valid_until}.\n\nDraft **${d.campaign_id}** is ready for ${audName(aud)} on ${ch.map(cap).join(", ")}. Estimated cost ${inr(d.est_cost_inr)}. Check the previews and tap **Approve & send**.`));
+    say(mdLite(`Done. **${pname(p)}** is now **${inr(r.offer_price)}** (was ${inr(r.old_price)}) till ${r.valid_until}.\n\nDraft **${d.campaign_id}** is ready for ${audName(aud)} on ${ch.map(cap).join(", ")}. Estimated cost ${inr(d.est_cost_inr)}. Check the previews and tap **Approve & send**.`));
     if(window.matchMedia("(max-width:860px)").matches) note("Tap “Campaigns & stock” above to review the draft.");
   }catch(e){ say(mdLite("Something went wrong: "+e.message)); }
 }
 
-function setBusy(b){ busy=b; $("sendBtn").disabled=b; $("stopBtn").hidden=!b; }
+function setBusy(b){ busy=b; $("sendBtn").disabled=b; $("stopBtn").hidden=!b; if(!b) saveChat(); }
+async function loadMe(){}
 function setMode(on){ aiReady=on; if(!on && aiMode!=="server") aiMode="off"; $("modeDot").className="dot "+(on?"on":"off"); $("modeText").textContent= on?"AI connected":"Demo mode (scripted)"; }
 $("stopBtn").onclick = ()=> ctl && ctl.abort();
 const input = $("input");
 input.addEventListener("input", ()=>{ input.style.height="auto"; input.style.height=Math.min(input.scrollHeight,140)+"px"; });
 input.addEventListener("keydown", e=>{ if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); $("composer").requestSubmit(); }});
-$("composer").addEventListener("submit", e=>{
-  e.preventDefault(); const text=input.value.trim(); if(!text||busy) return;
-  input.value=""; input.style.height="auto";
+
+// ---------- voice mode: tap the mic once, then it's a spoken conversation until "End voice" ----------
+// listen → (pause detected) → transcribe (Sarvam) → AI → speak reply (Sarvam) → listen again
+const VM = { on:false, mode:"off", stream:null, ctx:null, analyser:null, rec:null, gen:0, timer:null, lang:"unknown", audio:null, done:null, sr:null };
+const VLABEL = {listening:"Listening…", hearing:"Listening…", transcribing:"Got it…", thinking:"Thinking…", speaking:"Speaking…"};
+function vSet(state, hint){
+  $("vPanel").dataset.state = state; $("vState").textContent = VLABEL[state] || state;
+  if(hint !== undefined) $("vHint").textContent = hint;
+  $("vSkip").hidden = state !== "speaking";
+  if(state !== "listening" && state !== "hearing") $("vLevel").style.height = "0";
+}
+function stopSpeaking(){
+  if(VM.audio){ try{ VM.audio.pause(); }catch(_){} VM.audio = null; }
+  if(window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(_){}
+  if(VM.done){ const d = VM.done; VM.done = null; d(); }
+}
+function initVoice(serverVoice){
+  const canRecord = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder && (window.AudioContext||window.webkitAudioContext));
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  VM.mode = serverVoice && canRecord ? "sarvam" : (SR && window.speechSynthesis ? "browser" : "off");
+  if(VM.mode === "off") return;
+  $("micBtn").hidden = false;
+  $("micBtn").addEventListener("click", startVoice);
+  $("vEnd").addEventListener("click", endVoice);
+  $("vSkip").addEventListener("click", ()=>stopSpeaking());
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && VM.on) endVoice(); });
+}
+async function startVoice(){
+  if(busy || VM.on) return;
+  if(VM.mode === "sarvam"){
+    try{ VM.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true, autoGainControl:true}}); }
+    catch(e){ note(e && e.name==="NotAllowedError" ? "Microphone is blocked. Allow it from the icon in the browser's address bar, then tap Talk again." : "No microphone found."); return; }
+    const AC = window.AudioContext || window.webkitAudioContext;
+    VM.ctx = new AC(); const src = VM.ctx.createMediaStreamSource(VM.stream);
+    VM.analyser = VM.ctx.createAnalyser(); VM.analyser.fftSize = 1024; src.connect(VM.analyser);
+  }
+  VM.on = true; stopSpeaking();
+  $("composer").hidden = true; $("chips").hidden = true; $("vPanel").hidden = false;
+  listen();
+}
+function endVoice(){
+  VM.on = false; VM.gen++; clearInterval(VM.timer); stopSpeaking();
+  if(VM.rec && VM.rec.state !== "inactive"){ VM.rec._discard = true; try{ VM.rec.stop(); }catch(_){} }
+  VM.rec = null;
+  if(VM.sr){ try{ VM.sr.abort(); }catch(_){} VM.sr = null; }
+  if(VM.stream){ VM.stream.getTracks().forEach(t=>t.stop()); VM.stream = null; }
+  if(VM.ctx){ try{ VM.ctx.close(); }catch(_){} VM.ctx = null; }
+  $("vPanel").hidden = true; $("composer").hidden = false; input.focus();
+}
+function listen(hint){
+  if(!VM.on) return;
+  const gen = ++VM.gen; clearInterval(VM.timer);
+  if(VM.mode === "browser") return listenBrowser(gen, hint);
+  const types = ["audio/webm;codecs=opus","audio/webm","audio/ogg;codecs=opus","audio/mp4"];
+  const mime = types.find(t=>MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || "";
+  const chunks = []; const rec = new MediaRecorder(VM.stream, mime ? {mimeType:mime, audioBitsPerSecond:32000} : undefined);
+  VM.rec = rec;
+  rec.ondataavailable = e=>{ if(e.data && e.data.size) chunks.push(e.data); };
+  rec.onstop = ()=>{ if(rec._discard || gen !== VM.gen || !VM.on) return; handleUtterance(new Blob(chunks, {type: rec.mimeType || mime || "audio/webm"}), gen); };
+  if(VM.ctx && VM.ctx.state === "suspended") VM.ctx.resume();
+  rec.start(200);
+  vSet("listening", hint || "Speak now. I'll reply out loud.");
+  // simple voice-activity detection on the mic level
+  const buf = new Float32Array(VM.analyser.fftSize), t0 = performance.now(), cal = [];
+  let started = false, speechAt = 0, lastLoud = 0, floor = 0.008;
+  VM.timer = setInterval(()=>{
+    if(gen !== VM.gen || !VM.on){ clearInterval(VM.timer); return; }
+    VM.analyser.getFloatTimeDomainData(buf);
+    let sum = 0; for(let i=0;i<buf.length;i++) sum += buf[i]*buf[i];
+    const rms = Math.sqrt(sum/buf.length), now = performance.now(), el = now - t0;
+    if(el < 400){ cal.push(rms); floor = Math.max(0.006, cal.slice().sort((a,b)=>a-b)[Math.floor(cal.length/2)]); return; }
+    const thr = Math.max(0.018, floor*2.6);
+    $("vLevel").style.height = Math.min(100, Math.round(rms/0.12*100)) + "%";
+    if(rms > thr){ if(!started){ started = true; speechAt = now; vSet("hearing", "I'll send when you pause."); } lastLoud = now; }
+    const stop = discard=>{ clearInterval(VM.timer); if(discard) rec._discard = true; if(rec.state !== "inactive") rec.stop(); };
+    if(started && now - lastLoud > 1100 && now - speechAt > 500) return stop(false);   // you paused: send
+    if(started && now - speechAt > 25000) return stop(false);                          // 25 s limit
+    if(!started && el > 15000){ stop(true); listen("Still listening… say something, or tap End voice."); }  // nothing said: start a fresh clip
+  }, 50);
+}
+async function handleUtterance(blob, gen){
+  if(blob.size < 800){ return listen("Didn't catch that. Try again."); }
+  vSet("transcribing", "");
+  let t = "", lang = "unknown";
+  try{
+    const r = await fetch("/api/stt?lang=unknown", {method:"POST", headers:{"content-type": blob.type || "audio/webm"}, body: blob});
+    const j = await r.json().catch(()=>({}));
+    if(!r.ok){
+      if(j.error === "voice_key"){ endVoice(); note("The Sarvam API key was rejected. Restart start-local.ps1 with -ResetVoiceKey."); return; }
+      throw new Error(j.error === "local_limit" ? ERR.local_limit : "transcribe");
+    }
+    t = (j.transcript || "").trim(); lang = j.language_code || "unknown";
+  }catch(e){ if(gen === VM.gen && VM.on) listen(e.message === "transcribe" ? "Couldn't hear that clearly. Please say it again." : e.message); return; }
+  if(gen !== VM.gen || !VM.on) return;
+  if(!t) return listen("Didn't catch that. Try again.");
+  await converse(t, lang, gen);
+}
+async function converse(t, lang, gen){
+  VM.lang = lang || "unknown";
+  vSet("thinking", "“" + t + "”");
+  await sendMessage(t);
+  if(gen !== VM.gen || !VM.on) return;
+  await speakReply(gen);
+  if(gen === VM.gen && VM.on) listen();
+}
+function lastReplyText(){
+  const b = [...log.querySelectorAll(".msg.ai .body")].pop();
+  return b ? b.innerText.trim() : "";
+}
+async function speakReply(gen){
+  const txt = lastReplyText(); if(!txt) return;
+  vSet("speaking", txt.replace(/\s+/g," ").slice(0,90));
+  if(VM.mode === "browser") return speakBrowser(txt);
+  try{
+    const r = await fetch(`/api/tts?lang=${encodeURIComponent(VM.lang)}`, {method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({text: txt})});
+    if(!r.ok || gen !== VM.gen || !VM.on) return;
+    const url = URL.createObjectURL(await r.blob());
+    await new Promise(res=>{
+      const a = new Audio(url); VM.audio = a; VM.done = res;
+      a.onended = a.onerror = ()=>{ URL.revokeObjectURL(url); if(VM.done === res){ VM.done = null; VM.audio = null; } res(); };
+      a.play().catch(()=>res());
+    });
+  }catch(_){}
+}
+// fallback without the Sarvam key: the browser's own recognition + voices (Chrome/Edge)
+function listenBrowser(gen, hint){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const r = new SR(); r.lang = VM.lang !== "unknown" ? VM.lang : "en-IN"; r.interimResults = false; r.continuous = false;
+  let got = ""; VM.sr = r;
+  r.onresult = e=>{ got = Array.from(e.results).map(x=>x[0].transcript).join(" "); };
+  r.onerror = e=>{ if(e.error === "not-allowed"){ endVoice(); note("Microphone is blocked. Allow it from the icon in the browser's address bar."); } };
+  r.onend = ()=>{ VM.sr = null; if(gen !== VM.gen || !VM.on) return; if(got.trim()) converse(got.trim(), r.lang, gen); else listen("Still listening…"); };
+  vSet("listening", hint || "Speak now. I'll reply out loud."); try{ r.start(); }catch(_){}
+}
+function speakBrowser(txt){
+  return new Promise(res=>{
+    const u = new SpeechSynthesisUtterance(txt.slice(0,600));
+    u.lang = /[ఀ-౿]/.test(txt) ? "te-IN" : /[ऀ-ॿ]/.test(txt) ? "hi-IN" : "en-IN";
+    VM.done = res; u.onend = u.onerror = ()=>{ if(VM.done === res) VM.done = null; res(); };
+    speechSynthesis.speak(u);
+  });
+}
+
+async function sendMessage(text){
   addMsg("me", esc(text)); $("chips").hidden = true;
-  if(aiMode==="server") askServer(text); else if(aiReady && sample) askAI(text); else offline(text);
+  if(aiMode === "server") await askServer(text);
+  else if(aiReady && sample) await askAI(text);
+  else offline(text);
+}
+$("composer").addEventListener("submit", e=>{
+  e.preventDefault(); const text = input.value.trim(); if(!text || busy) return;
+  input.value = ""; input.style.height = "auto";
+  sendMessage(text);
 });
-const SUGG = [
-  "Apply 20% off on Swift brake pads and send a campaign to garages on WhatsApp, Facebook and Instagram",
-  "What should I promote this week?",
-  "Ape brake shoes 15% off for 10 days, WhatsApp to fleet owners in Telugu",
-  "Boost the Swift brake pad offer on Instagram with ₹300 a day for 5 days"
-];
+
+let SUGG = ["What should I promote this week?"];   // replaced with real part suggestions once the dataset loads
+async function loadDataset(){
+  try{
+    const r = await fetch("/api/dataset",{cache:"no-store"}); if(!r.ok) return false;
+    const d = await r.json(); if(!d || !Array.isArray(d.products) || !d.products.length) return false;
+    DATASET = d; SEED_PRODUCTS = d.products; AUDIENCES = d.audiences; SOCIAL = d.social || SOCIAL;
+    BIZ = {...BIZ, name:d.store.name, short:d.store.short, area:d.store.area, phone:d.store.phone};
+    const ex = d.products.find(p=>p.fast) || d.products[0];
+    $("input").placeholder = `e.g. 15% off on ${ex.name} for ${ex.fit}, send to garages on WhatsApp and Instagram`;
+    $("bizName").textContent = BIZ.name; $("bizSub").textContent = `AI CMO · ${BIZ.area} · anonymised test data`;
+    document.title = BR.title;
+    return true;
+  }catch(_){ return false; }
+}
+function buildSugg(){
+  const dead = S.products.filter(p=>p.lastSale>=90&&p.stock>0).sort((a,b)=>b.stock*b.cost-a.stock*a.cost);
+  const fast = S.products.filter(p=>p.fast).sort((a,b)=>(b.sold30||0)-(a.sold30||0));
+  const d = dead[0], d2 = dead[1]||dead[0], f = fast[0];
+  if(!d || !f) return;
+  SUGG = [
+    `Apply 15% off on ${d.name} for ${d.fit} and send a campaign to garages on WhatsApp and Instagram`,
+    "What should I promote this week?",
+    `Win back lapsed regulars: 10% off ${f.name} for ${f.fit}, WhatsApp message in Telugu`,
+    `Clear ${d2.name} (${d2.fit}) stock: 12% off for 10 days to parts shops, and boost on Instagram with ₹300 a day for 5 days`
+  ];
+}
 function chips(){ $("chips").innerHTML = SUGG.map((s,i)=>`<button type="button" class="chip" data-i="${i}">${esc(s)}</button>`).join(""); }
 $("chips").addEventListener("click", e=>{ const b=e.target.closest(".chip"); if(!b||busy) return; input.value=SUGG[b.dataset.i]; $("composer").requestSubmit(); });
+function headsUp(){
+  const d=S.products.filter(p=>p.lastSale>=90&&p.stock>0).sort((a,b)=>b.stock*b.cost-a.stock*a.cost)[0];
+  if(!d) return "";
+  return `**Heads-up:** ${d.stock.toLocaleString("en-IN")} × ${d.name} (${d.fit}) worth ${inr(d.stock*d.cost)} at cost ${d.neverSold?`haven't sold in the last ${d.lastSale} days`:`last sold ${d.lastSale} days ago`}.`;
+}
 function welcome(){
   log.innerHTML="";
-  addMsg("ai", mdLite(`Namaste! I'm **Prachar**, your AI CMO. I can see your stock, prices and customer lists.\n\nTell me what you want, like an offer on a part and where to send it. I'll set the price, write the WhatsApp message and posts, and prepare a draft for you to approve.\n\n**Heads-up:** 146 Bosch brake pads (Swift/Dzire) haven't sold in 128 days.`));
+  addMsg("ai", mdLite(`Namaste! I'm **${ANAME}**, your AI CMO. I can see your stock, prices and customer lists.\n\nTell me what you want, like an offer on a part and where to send it. I'll set the price, write the WhatsApp message and posts, and prepare a draft for you to approve.\n\n${headsUp()}`));
 }
-$("resetBtn").onclick = ()=>{ if(ctl) ctl.abort(); seed(); turns=[]; apiMsgs=[]; welcome(); $("chips").hidden=false; render(); };
+$("resetBtn").onclick = ()=>{ if(ctl) ctl.abort(); seed(); turns=[]; apiMsgs=[]; clearChat(); welcome(); $("chips").hidden=false; render(); };
 $("vChat").onclick=()=>{ $("app").dataset.view="chat"; $("vChat").setAttribute("aria-pressed","true"); $("vWork").setAttribute("aria-pressed","false"); };
 $("vWork").onclick=()=>{ $("app").dataset.view="work"; $("vWork").setAttribute("aria-pressed","true"); $("vChat").setAttribute("aria-pressed","false"); };
 
-welcome(); chips(); render();
+(async ()=>{
+  if(await loadDataset()){ seed(); buildSugg(); chips(); if(!restoreChat()) welcome(); render(); await loadState(); loadMe(); }
+  else {
+    render(); $("chips").hidden = true;
+    addMsg("ai", mdLite("I couldn't load the store data. Refresh the page. If this keeps happening, check that the server is running and that `dataset/insite-demo.json` exists."));
+  }
+})();
 (async ()=>{
   try{
     const h = await fetch("/api/health",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
+    if(h) initVoice(!!h.voice);
     if(h && h.ai){ aiMode="server"; aiReady=true; $("modeDot").className="dot on"; $("modeText").textContent="AI connected"; return; }
   }catch(_){}
   try{
