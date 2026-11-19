@@ -1,0 +1,9 @@
+{
+  "name": "prachar-ai-cmo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Prachar AI CMO demo for Indian auto-parts distributors",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=20" }
+}

@@ -1,0 +1,2 @@
+# keep files byte-for-byte as they are (Windows scripts keep CRLF, the rest LF)
+* -text

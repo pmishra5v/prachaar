@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Prachar: AI CMO demo for Indian auto-parts distributors.">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Prachar AI CMO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F3F4F7; --surface:#FFFFFF; --surface-2:#EBEEF3; --ink:#18202C; --muted:#5A6475; --line:#D9DEE6;
+  --accent:#F2B705; --accent-ink:#1A1400; --accent-soft:#FFF4CC; --brand:#23395D; --brand-ink:#FFFFFF;
+  --good:#1E8E5A; --good-soft:#E3F4EB; --warn:#B26A00; --warn-soft:#FFF0DA; --bad:#C0392B; --bad-soft:#FBE6E3;
+  --wa:#1FA855; --wa-bubble:#DCF8C6; --wa-bg:#ECE5DD; --fb:#1B74E4; --ig1:#F58529; --ig2:#DD2A7B; --ig3:#8134AF;
+  --me:#23395D; --me-ink:#FFFFFF;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Noto Sans Devanagari","Noto Sans Telugu",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0F131A; --surface:#171C25; --surface-2:#1F2631; --ink:#E6EAF1; --muted:#9AA4B5; --line:#2C3441;
+    --accent:#F5C12E; --accent-ink:#1A1400; --accent-soft:#3A3113; --brand:#9DB6E0; --brand-ink:#0F131A;
+    --good:#4CC38A; --good-soft:#15301F; --warn:#F0A43A; --warn-soft:#352711; --bad:#F07565; --bad-soft:#3A1C18;
+    --wa-bubble:#1F3B2A; --wa-bg:#11161C; --me:#2E4A78; --me-ink:#FFFFFF;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F131A; --surface:#171C25; --surface-2:#1F2631; --ink:#E6EAF1; --muted:#9AA4B5; --line:#2C3441;
+  --accent:#F5C12E; --accent-ink:#1A1400; --accent-soft:#3A3113; --brand:#9DB6E0; --brand-ink:#0F131A;
+  --good:#4CC38A; --good-soft:#15301F; --warn:#F0A43A; --warn-soft:#352711; --bad:#F07565; --bad-soft:#3A1C18;
+  --wa-bubble:#1F3B2A; --wa-bg:#11161C; --me:#2E4A78; --me-ink:#FFFFFF;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.5}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{height:100%;display:grid;grid-template-rows:auto 1fr;max-width:1440px;margin:0 auto}
+header.top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--surface);flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
+.plate{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:.06em;background:var(--accent);color:var(--accent-ink);padding:1px 10px;border:2px solid var(--accent-ink);border-radius:4px;line-height:1.2}
+.biz{min-width:0}
+.biz b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.biz span{color:var(--muted);font-size:12px}
+.mode{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
+.dot.on{background:var(--good)} .dot.off{background:var(--warn)}
+.ghost{border:1px solid var(--line);background:transparent;border-radius:6px;padding:4px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-2)}
+.switch{display:none;width:100%;gap:4px;background:var(--surface-2);padding:3px;border-radius:8px}
+.switch button{flex:1;border:0;background:transparent;padding:6px;border-radius:6px;font-weight:500}
+.switch button[aria-pressed="true"]{background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+
+main.panes{display:grid;grid-template-columns:minmax(340px,42%) 1fr;min-height:0}
+.chat{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line);background:var(--surface)}
+.log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:88%;padding:10px 12px;border-radius:12px;white-space:normal;overflow-wrap:anywhere}
+.msg p{margin:0} .msg p+p,.msg ul+p,.msg p+ul{margin-top:6px}
+.msg ul{margin:0;padding-left:18px}
+.msg.ai{background:var(--surface-2);align-self:flex-start;border-top-left-radius:4px}
+.msg.me{background:var(--me);color:var(--me-ink);align-self:flex-end;border-top-right-radius:4px}
+.msg.note{align-self:center;background:transparent;border:1px dashed var(--line);color:var(--muted);font-size:12px;max-width:100%;text-align:center}
+.who{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;font-weight:600}
+.acts{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.act{font-size:11px;font-family:var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--muted)}
+.act.ok{border-color:var(--good);color:var(--good)} .act.err{border-color:var(--bad);color:var(--bad)}
+.thinking{color:var(--muted);font-style:italic}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:12.5px;text-align:left}
+.chip:hover{border-color:var(--accent);background:var(--accent-soft)}
+form.composer{display:flex;gap:8px;padding:10px 16px 14px;border-top:1px solid var(--line);align-items:flex-end}
+form.composer textarea{flex:1;resize:none;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font:inherit;background:var(--bg);color:var(--ink);min-height:42px;max-height:140px}
+.send{border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;border-radius:10px;padding:10px 16px}
+.send[disabled]{opacity:.5;cursor:not-allowed}
+.stop{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px}
+
+.work{display:flex;flex-direction:column;min-height:0;min-width:0}
+.tabs{display:flex;gap:2px;padding:10px 16px 0;border-bottom:1px solid var(--line);background:var(--bg);overflow-x:auto}
+.tabs button{border:0;background:transparent;padding:8px 12px;border-bottom:2px solid transparent;font-weight:500;color:var(--muted);white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.count{font-family:var(--mono);font-size:11px;background:var(--surface-2);border-radius:999px;padding:0 6px;margin-left:4px}
+.pane{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+.pane>*{flex-shrink:0}
+.sampletag{font-size:11px;color:var(--muted);letter-spacing:.04em}
+h2.sec{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:.02em;margin:0;text-wrap:balance}
+
+.camp{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.camp.flash{animation:flash 1.6s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+@media (prefers-reduced-motion: reduce){.camp.flash{animation:none}}
+.camp-h{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.camp-h h3{margin:0;font-size:16px;font-weight:600;flex:1;min-width:180px}
+.meta{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;margin-top:2px;font-weight:400}
+.pill{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.pill.draft{background:var(--accent-soft);color:var(--warn)}
+.pill.sending{background:var(--surface-2);color:var(--muted)}
+.pill.sent{background:var(--good-soft);color:var(--good)}
+.pill.discarded{background:var(--surface-2);color:var(--muted)}
+.previews{display:flex;gap:14px;padding:14px;overflow-x:auto;background:var(--bg)}
+.pv{flex:0 0 260px;display:flex;flex-direction:column;gap:6px}
+.pv-l{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px}
+.sw{width:8px;height:8px;border-radius:2px;display:inline-block}
+.wa{background:var(--wa-bg);border-radius:10px;padding:10px;min-height:120px}
+.wa-b{background:var(--wa-bubble);border-radius:8px;border-top-left-radius:2px;padding:6px 8px;font-size:12.5px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.08);overflow-wrap:anywhere}
+.wa-b .poster{margin-bottom:6px}
+.wa-t{text-align:right;font-size:10px;color:var(--muted)}
+.fb,.ig{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:12.5px}
+.post-h{display:flex;align-items:center;gap:8px;padding:8px 10px}
+.av{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:var(--display);font-weight:700;display:grid;place-items:center;font-size:12px;flex:0 0 auto}
+.ig .av{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--ig2)}
+.post-h b{font-size:12px;display:block;line-height:1.2}
+.post-h small{color:var(--muted);font-size:10.5px}
+.post-t{padding:0 10px 8px;white-space:pre-wrap;overflow-wrap:anywhere}
+.ig .post-t{padding-top:8px}
+.post-f{display:flex;justify-content:space-between;padding:6px 10px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
+.boost{font-size:11px;background:var(--accent-soft);color:var(--ink);padding:3px 10px}
+
+.poster{position:relative;background:var(--brand);color:#fff;aspect-ratio:1/1;max-width:100%;padding:12px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;border-radius:0}
+.wa .poster{border-radius:6px;aspect-ratio:auto;min-height:190px;gap:8px}
+.poster::before{content:"";position:absolute;inset:auto -30% -45% auto;width:90%;aspect-ratio:1;border-radius:50%;border:18px solid rgba(255,255,255,.07)}
+.poster .tag{align-self:flex-start;background:#F2B705;color:#1A1400;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:30px;line-height:1;padding:4px 10px 3px;border:2px solid #1A1400;border-radius:4px;letter-spacing:.02em}
+.poster .hl{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:21px;line-height:1.05;text-transform:uppercase;letter-spacing:.02em;text-wrap:balance;position:relative}
+.poster .pn{font-size:11px;opacity:.85;margin-top:3px;position:relative}
+.poster .pr{display:flex;align-items:baseline;gap:8px;position:relative;font-family:"IBM Plex Mono",monospace}
+.poster .pr b{font-size:20px;color:#F2B705}
+.poster .pr s{font-size:12px;opacity:.7}
+.poster .ft{font-size:10px;opacity:.8;display:flex;justify-content:space-between;gap:6px;position:relative}
+
+.camp-f{display:flex;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid var(--line);flex-wrap:wrap}
+.cost{font-size:12.5px;color:var(--muted);flex:1;min-width:200px}
+.cost b{color:var(--ink);font-family:var(--mono);font-weight:500}
+.btn{border:0;border-radius:8px;padding:8px 14px;font-weight:600}
+.btn.pri{background:var(--accent);color:var(--accent-ink)}
+.btn.sec{background:transparent;border:1px solid var(--line)}
+.results{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));background:var(--surface);border-top:1px solid var(--line)}
+.r{background:var(--surface);padding:10px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.r span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.r b{font-family:var(--mono);font-weight:500;font-size:16px;font-variant-numeric:tabular-nums}
+.simnote{font-size:11px;color:var(--muted);padding:6px 14px;background:var(--surface)}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:720px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12.5px}
+.sku{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.fit{color:var(--muted);font-size:12px}
+.offer{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:11px;border-radius:3px;padding:0 5px;margin-left:4px}
+.flag{font-size:11px;border-radius:3px;padding:0 5px;white-space:nowrap}
+.flag.dead{background:var(--bad-soft);color:var(--bad)} .flag.fast{background:var(--good-soft);color:var(--good)}
+.aud{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.aud-c{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.aud-c h4{margin:0 0 6px;font-size:14px}
+.aud-c dl{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin:0;font-size:12.5px}
+.aud-c dt{color:var(--muted)} .aud-c dd{margin:0;font-family:var(--mono);text-align:right}
+.empty{color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:18px;text-align:center}
+
+@media (max-width: 860px){
+  .switch{display:flex}
+  main.panes{grid-template-columns:1fr}
+  .chat{border-right:0}
+  .app[data-view="chat"] .work{display:none}
+  .app[data-view="work"] .chat{display:none}
+  .mode .ghost{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app" data-view="chat">
+  <header class="top">
+    <div class="logo">
+      <span class="plate" aria-hidden="true">PRACHAR</span>
+      <div class="biz"><b>Sri Venkateswara Auto Spares</b><span>AI CMO · Kukatpally, Hyderabad · sample data</span></div>
+    </div>
+    <div class="mode"><span class="dot" id="modeDot"></span><span id="modeText">Connecting…</span><button class="ghost" id="resetBtn" type="button">Reset demo</button></div>
+    <div class="switch" role="group" aria-label="View">
+      <button type="button" id="vChat" aria-pressed="true">Chat</button>
+      <button type="button" id="vWork" aria-pressed="false">Campaigns &amp; stock</button>
+    </div>
+  </header>
+  <main class="panes">
+    <section class="chat" aria-label="Chat with AI CMO">
+      <div class="log" id="log" aria-live="polite"></div>
+      <div class="chips" id="chips"></div>
+      <form class="composer" id="composer">
+        
+        <textarea id="input" rows="1" aria-label="Message to Prachar" placeholder="e.g. 20% off on Swift brake pads, send to garages on WhatsApp and Instagram"></textarea>
+        <button type="button" class="stop" id="stopBtn" hidden>Stop</button>
+        <button type="submit" class="send" id="sendBtn">Send</button>
+      </form>
+    </section>
+    <section class="work" aria-label="Workspace">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tCamp" aria-selected="true" data-tab="camp">Campaigns<span class="count" id="cCamp">0</span></button>
+        <button role="tab" id="tCat" aria-selected="false" data-tab="cat">Stock &amp; offers<span class="count" id="cOff">0</span></button>
+        <button role="tab" id="tAud" aria-selected="false" data-tab="aud">Audiences</button>
+      </div>
+      <div class="pane" id="pane"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+"use strict";
+const BIZ = { name:"Sri Venkateswara Auto Spares", short:"SVAS", area:"Kukatpally, Hyderabad", phone:"+91 90000 12345", minMargin:10 };
+const WA_RATE = 0.8631, GST = 0.18;
+const TODAY = new Date();
+const fmtDate = d => d.toLocaleDateString("en-IN",{day:"numeric",month:"short"});
+const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
+const inr2 = n => "₹" + n.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+const cap = s => s[0].toUpperCase()+s.slice(1);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const SEED_PRODUCTS = [
+  {sku:"BP-SWF-01",name:"Front brake pad set",brand:"Bosch",fit:"Maruti Swift / Dzire (2018+)",cat:"Brakes",hsn:"8708",mrp:1850,price:1450,cost:950,stock:146,lastSale:128,seg:"car"},
+  {sku:"OF-ACT-02",name:"Oil filter",brand:"Purolator",fit:"Honda Activa 5G / 6G",cat:"Filters",hsn:"8421",mrp:120,price:95,cost:62,stock:820,lastSale:1,seg:"2w",fast:true},
+  {sku:"WB-UNI-18",name:"Wiper blade 18\"",brand:"Bosch Clear Advantage",fit:"Universal (hook type)",cat:"Wipers",hsn:"8512",mrp:420,price:340,cost:225,stock:610,lastSale:96,seg:"car"},
+  {sku:"CK-SPL-03",name:"Chain sprocket kit",brand:"Rolon",fit:"Hero Splendor Plus",cat:"Transmission",hsn:"8714",mrp:950,price:780,cost:560,stock:95,lastSale:3,seg:"2w"},
+  {sku:"CL-BOL-04",name:"Clutch plate kit",brand:"Valeo",fit:"Mahindra Bolero",cat:"Clutch",hsn:"8708",mrp:6100,price:5200,cost:4150,stock:22,lastSale:12,seg:"car"},
+  {sku:"HL-PUL-05",name:"Headlight assembly",brand:"Lumax",fit:"Bajaj Pulsar 150",cat:"Lighting",hsn:"8512",mrp:1990,price:1650,cost:1210,stock:40,lastSale:21,seg:"2w"},
+  {sku:"BT-AMR-35",name:"Car battery 35Ah",brand:"Amaron",fit:"Small cars (Alto, Kwid, WagonR)",cat:"Batteries",hsn:"8507",mrp:5400,price:4650,cost:3900,stock:55,lastSale:4,seg:"car"},
+  {sku:"SA-ACE-07",name:"Rear shock absorber",brand:"Gabriel",fit:"Tata Ace",cat:"Suspension",hsn:"8708",mrp:1650,price:1380,cost:1020,stock:64,lastSale:9,seg:"cv"},
+  {sku:"AF-CRT-08",name:"Air filter",brand:"Mann",fit:"Hyundai Creta (2020+)",cat:"Filters",hsn:"8421",mrp:650,price:540,cost:360,stock:210,lastSale:2,seg:"car",fast:true},
+  {sku:"SP-NGK-09",name:"Spark plug CPR8EA-9",brand:"NGK",fit:"Most 110–160cc bikes",cat:"Ignition",hsn:"8511",mrp:200,price:165,cost:110,stock:1200,lastSale:1,seg:"2w",fast:true},
+  {sku:"CO-SRV-1L",name:"Engine coolant 1L",brand:"Servo",fit:"All cars",cat:"Fluids",hsn:"3820",mrp:310,price:260,cost:180,stock:380,lastSale:6,seg:"car"},
+  {sku:"BS-APE-10",name:"Rear brake shoe set",brand:"Brakes India",fit:"Piaggio Ape (3W)",cat:"Brakes",hsn:"8708",mrp:520,price:420,cost:300,stock:175,lastSale:95,seg:"cv"}
+];
+const AUDIENCES = [
+  {id:"garages",name:"Garages & mechanics",total:420,optIn:388,note:"Car and 2W workshops"},
+  {id:"retailers",name:"Parts shops (retail)",total:180,optIn:171,note:"Counter sales shops"},
+  {id:"fleets",name:"Fleet owners & transporters",total:35,optIn:31,note:"Tata Ace, Ape, Bolero fleets"},
+  {id:"lapsed",name:"Lapsed buyers (45+ days)",total:64,optIn:58,note:"Ordered monthly before"},
+  {id:"all",name:"All B2B customers",total:635,optIn:590,note:"Everyone opted in"}
+];
+const SOCIAL = { facebook:{followers:3240}, instagram:{followers:1480} };
+
+let S;
+function seed(){
+  const p = JSON.parse(JSON.stringify(SEED_PRODUCTS));
+  const wb = p.find(x=>x.sku==="WB-UNI-18");
+  const past = new Date(TODAY); past.setDate(past.getDate()-104);
+  const until = new Date(past); until.setDate(until.getDate()+10);
+  S = {
+    products:p, campaigns:[{
+      id:"C-0001", name:"Pre-monsoon wiper blades", example:true, status:"sent", created:past, sentAt:past,
+      skus:["WB-UNI-18"], audience:"garages", channels:["whatsapp","instagram"], language:"English",
+      headline:"Monsoon ready wipers", offerSnap:{percent:15,price:289,was:340,until},
+      whatsapp:"Monsoon is here! Bosch Clear Advantage 18\" wiper blades now ₹289 (was ₹340). Offer till "+fmtDate(until)+". Reply ORDER or call "+BIZ.phone+".\nReply STOP to opt out.",
+      facebook:"", instagram:"Clear view this monsoon. Bosch wiper blades at ₹289 for garages. #Hyderabad #AutoParts #Monsoon",
+      adBudget:0, adDays:0,
+      delivery:{whatsapp:{sent:388,delivered:371,cost:371*WA_RATE*(1+GST)},instagram:{reach:640}},
+      results:{replies:34,orders:19,units:212,sales:212*289}
+    }],
+    seq:2, tab:"camp", flash:null
+  };
+  wb.lastSale = 96;
+}
+seed();
+
+// ---------- domain actions (shared by AI tools and offline mode) ----------
+function findProducts(q){
+  const words = String(q||"").toLowerCase().replace(/[^a-z0-9ऀ-౿ ]/g," ").split(/\s+/).filter(w=>w.length>1 && !["on","for","the","and","of","set","kit","parts","part"].includes(w));
+  if(!words.length) return [];
+  return S.products.map(p=>{
+    const hay = (p.sku+" "+p.name+" "+p.brand+" "+p.fit+" "+p.cat).toLowerCase();
+    let score = 0; for(const w of words){ if(hay.includes(w)) score += w.length>3?2:1; else if(w.length>4 && hay.includes(w.slice(0,-1))) score+=1; }
+    return {p,score};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).map(x=>x.p);
+}
+function productView(p){
+  const o = activeOffer(p);
+  return {sku:p.sku,name:p.name,brand:p.brand,fits:p.fit,category:p.cat,hsn:p.hsn,mrp:p.mrp,price_to_trade:p.price,
+    offer: o?{percent:o.percent,offer_price:o.price,valid_until:fmtDate(o.until)}:null,
+    stock_units:p.stock,margin_pct:Math.round((p.price-p.cost)/p.price*100),days_since_last_sale:p.lastSale};
+}
+function activeOffer(p){ return p.offer && p.offer.until >= startOfDay(TODAY) ? p.offer : null; }
+function startOfDay(d){ const x=new Date(d); x.setHours(0,0,0,0); return x; }
+function applyDiscount(sku, percent, days){
+  const p = S.products.find(x=>x.sku===String(sku).toUpperCase());
+  if(!p) throw new Error("No product with SKU "+sku+". Use search_products first.");
+  percent = Number(percent); days = Math.round(Number(days)||7);
+  if(!(percent>0 && percent<=60)) throw new Error("Discount must be between 1% and 60%.");
+  if(days<1||days>60) days = 7;
+  const price = Math.round(p.price*(1-percent/100));
+  const margin = (price-p.cost)/price*100;
+  if(margin < BIZ.minMargin){
+    const maxPct = Math.floor((1 - p.cost/(1-BIZ.minMargin/100)/p.price)*100);
+    throw new Error(`Blocked by margin guard: ${percent}% off leaves ${margin.toFixed(1)}% margin, below the ${BIZ.minMargin}% floor. Max allowed is ${Math.max(maxPct,0)}%.`);
+  }
+  const until = new Date(TODAY); until.setDate(until.getDate()+days);
+  p.offer = {percent, price, was:p.price, until};
+  render();
+  return {sku:p.sku, name:p.name, old_price:p.price, offer_price:price, percent, margin_after_pct:Math.round(margin), valid_until:fmtDate(until), stock_units:p.stock};
+}
+function removeDiscount(sku){
+  const p = S.products.find(x=>x.sku===String(sku).toUpperCase());
+  if(!p) throw new Error("No product with SKU "+sku);
+  p.offer = null; render(); return {sku:p.sku, price_now:p.price};
+}
+function waCost(aud){ const a = AUDIENCES.find(x=>x.id===aud); return a ? a.optIn*WA_RATE*(1+GST) : 0; }
+function createDraft(input){
+  const skus = (Array.isArray(input.skus)?input.skus:[input.skus]).filter(Boolean).map(s=>String(s).toUpperCase());
+  const prods = skus.map(s=>S.products.find(p=>p.sku===s));
+  if(!prods.length || prods.some(p=>!p)) throw new Error("Unknown SKU in "+skus.join(", ")+". Use search_products.");
+  if(prods.some(p=>p.stock<=0)) throw new Error("Cannot promote an out-of-stock item.");
+  const aud = AUDIENCES.find(a=>a.id===input.audience_id) ? input.audience_id : null;
+  if(!aud) throw new Error("audience_id must be one of: "+AUDIENCES.map(a=>a.id).join(", "));
+  let ch = (Array.isArray(input.channels)?input.channels:[input.channels]).map(c=>String(c).toLowerCase()).map(c=>c.startsWith("insta")?"instagram":c.startsWith("f")?"facebook":c.startsWith("wh")?"whatsapp":c).filter(c=>["whatsapp","facebook","instagram"].includes(c));
+  ch = [...new Set(ch)]; if(!ch.length) throw new Error("channels must include whatsapp, facebook and/or instagram");
+  if(ch.includes("whatsapp") && !input.whatsapp_message) throw new Error("whatsapp_message is required for WhatsApp.");
+  if(input.whatsapp_message && input.whatsapp_message.length>1000) throw new Error("WhatsApp message too long; keep under 600 characters.");
+  if(input.replaces_id){ const old = S.campaigns.find(c=>c.id===input.replaces_id && c.status==="draft"); if(old) old.status="discarded"; }
+  const p0 = prods[0]; const o = activeOffer(p0);
+  const c = {
+    id:"C-"+String(S.seq++).padStart(4,"0"), name:String(input.name||("Offer: "+p0.name)).slice(0,80), status:"draft", created:new Date(),
+    skus, audience:aud, channels:ch, language:String(input.language||"English"),
+    headline:String(input.poster_headline||(o?o.percent+"% off":p0.name)).slice(0,48),
+    offerSnap:o?{...o}:null,
+    whatsapp:ch.includes("whatsapp")?String(input.whatsapp_message||""):"",
+    facebook:ch.includes("facebook")?String(input.facebook_post||input.instagram_caption||""):"",
+    instagram:ch.includes("instagram")?String(input.instagram_caption||input.facebook_post||""):"",
+    adBudget:Math.max(0,Math.round(Number(input.ad_budget_per_day_inr)||0)), adDays:Math.max(0,Math.round(Number(input.ad_days)||0))
+  };
+  if(c.adBudget && !c.adDays) c.adDays = 5;
+  S.campaigns.unshift(c); S.tab="camp"; S.flash=c.id; render();
+  return {campaign_id:c.id, status:"draft — waiting for owner approval in the Campaigns panel", channels:ch, audience:aud,
+    est_cost_inr:Math.round(estCost(c)), whatsapp_recipients: ch.includes("whatsapp")?AUDIENCES.find(a=>a.id===aud).optIn:0};
+}
+function estCost(c){ let t=0; if(c.channels.includes("whatsapp")) t+=waCost(c.audience); if(c.adBudget) t+=c.adBudget*c.adDays*(1+GST); return t; }
+function insights(){
+  const dead = S.products.filter(p=>p.lastSale>=90).map(p=>({sku:p.sku,name:p.name,fits:p.fit,stock_units:p.stock,stock_value_at_cost:inr(p.stock*p.cost),days_since_last_sale:p.lastSale}));
+  const fast = S.products.filter(p=>p.fast).map(p=>({sku:p.sku,name:p.name,stock_units:p.stock}));
+  return {dead_stock:dead, fast_movers:fast, lapsed_customers:{count:64,opted_in:58},
+    season:"Late Sept–Oct: monsoon ending in Telangana (wipers, brakes see less demand); Navratri–Dussehra in October and Diwali in November drive vehicle servicing and fleet repairs; festive offers work well with garages.",
+    today:TODAY.toDateString()};
+}
+function campaignStatus(id){
+  const c = S.campaigns.find(x=>x.id===id); if(!c) throw new Error("No campaign "+id);
+  return {id:c.id,name:c.name,status:c.status,channels:c.channels,audience:c.audience,delivery:c.delivery||null,results:c.results||null,simulated:true};
+}
+
+// ---------- rendering ----------
+const $ = id => document.getElementById(id);
+const pane = $("pane");
+function audName(id){ return (AUDIENCES.find(a=>a.id===id)||{}).name||id; }
+function poster(c, kind){
+  const p = S.products.find(x=>x.sku===c.skus[0]); const o = c.offerSnap;
+  return `<div class="poster" role="img" aria-label="Offer poster for ${esc(p.name)}">
+    ${o?`<div class="tag">${o.percent}% OFF</div>`:`<div class="tag">NEW</div>`}
+    <div><div class="hl">${esc(c.headline)}</div><div class="pn">${esc(p.brand)} ${esc(p.name)} · ${esc(p.fit)}</div></div>
+    <div class="pr">${o?`<b>${inr(o.price)}</b><s>${inr(o.was)}</s>`:`<b>${inr(p.price)}</b>`}</div>
+    <div class="ft"><span>${esc(BIZ.short)} · ${esc(BIZ.phone)}</span><span>${o?"Till "+fmtDate(new Date(o.until)):""}</span></div>
+  </div>`;
+}
+function previewBlocks(c){
+  const out = [];
+  if(c.channels.includes("whatsapp")) out.push(`<div class="pv"><div class="pv-l"><span class="sw" style="background:var(--wa)"></span>WhatsApp · ${AUDIENCES.find(a=>a.id===c.audience).optIn} opted-in</div>
+    <div class="wa"><div class="wa-b">${poster(c)}${esc(c.whatsapp)}<div class="wa-t">10:30 am</div></div></div></div>`);
+  if(c.channels.includes("facebook")) out.push(`<div class="pv"><div class="pv-l"><span class="sw" style="background:var(--fb)"></span>Facebook page${c.adBudget?" · boosted":""}</div>
+    <div class="fb"><div class="post-h"><span class="av">SV</span><div><b>${esc(BIZ.name)}</b><small>${c.adBudget?"Sponsored":"Just now"} · ${esc(BIZ.area)}</small></div></div>
+    <div class="post-t">${esc(c.facebook)}</div>${poster(c)}${c.adBudget?`<div class="boost">Ad: ${inr(c.adBudget)}/day × ${c.adDays} days · 15 km around Kukatpally · Send WhatsApp message button</div>`:""}
+    <div class="post-f"><span>Like</span><span>Comment</span><span>WhatsApp</span></div></div></div>`);
+  if(c.channels.includes("instagram")) out.push(`<div class="pv"><div class="pv-l"><span class="sw" style="background:linear-gradient(45deg,var(--ig1),var(--ig2),var(--ig3))"></span>Instagram${c.adBudget?" · boosted":""}</div>
+    <div class="ig"><div class="post-h"><span class="av">SV</span><div><b>svas.autospares</b><small>${c.adBudget?"Sponsored":"Hyderabad"}</small></div></div>${poster(c)}
+    <div class="post-t"><b>svas.autospares</b> ${esc(c.instagram)}</div></div></div>`);
+  return out.join("");
+}
+function campCard(c){
+  const pill = {draft:"Draft",sending:"Sending…",sent:"Sent",discarded:"Discarded"}[c.status];
+  const costLine = [];
+  if(c.channels.includes("whatsapp")){ const a=AUDIENCES.find(x=>x.id===c.audience); costLine.push(`WhatsApp: ${a.optIn} × ${inr2(WA_RATE)} + GST ≈ <b>${inr(waCost(c.audience))}</b>`); }
+  if(c.adBudget) costLine.push(`Meta ads: ${inr(c.adBudget)} × ${c.adDays} days + GST ≈ <b>${inr(c.adBudget*c.adDays*(1+GST))}</b>`);
+  if(!c.adBudget && (c.channels.includes("facebook")||c.channels.includes("instagram"))) costLine.push("Page posts: free");
+  let foot = "";
+  if(c.status==="draft") foot = `<div class="camp-f"><div class="cost">${costLine.join(" · ")}<br>Total ≈ <b>${inr(estCost(c))}</b></div>
+      <button class="btn sec" data-discard="${c.id}" type="button">Discard</button><button class="btn pri" data-approve="${c.id}" type="button">Approve &amp; send</button></div>`;
+  else if(c.status==="sending") foot = `<div class="camp-f"><div class="cost">Sending to ${c.channels.join(", ")}…</div></div>`;
+  let res = "";
+  if(c.delivery){
+    const cells = [];
+    if(c.delivery.whatsapp) cells.push(["WA delivered", c.delivery.whatsapp.delivered+" / "+c.delivery.whatsapp.sent]);
+    if(c.delivery.facebook) cells.push(["FB reach", c.delivery.facebook.reach.toLocaleString("en-IN")]);
+    if(c.delivery.instagram) cells.push(["IG reach", c.delivery.instagram.reach.toLocaleString("en-IN")]);
+    const spend = (c.delivery.whatsapp?c.delivery.whatsapp.cost:0) + (c.adBudget? c.adBudget*c.adDays*(1+GST):0);
+    cells.push(["Spend", inr(spend)]);
+    if(c.results){ cells.push(["Replies", c.results.replies],["Orders", c.results.orders],["Sales", inr(c.results.sales)],["Return", (c.results.sales/Math.max(spend,1)).toFixed(0)+"×"]); }
+    else cells.push(["Orders","tracking…"]);
+    res = `<div class="results">${cells.map(([k,v])=>`<div class="r"><span>${k}</span><b>${v}</b></div>`).join("")}</div>
+      <div class="simnote">${c.example?"Example campaign from earlier in the season. ":""}Simulated delivery and results · attribution: promoted SKU bought within 14 days.</div>`;
+  }
+  return `<article class="camp${S.flash===c.id?" flash":""}" id="card-${c.id}">
+    <div class="camp-h"><h3>${esc(c.name)}<div class="meta"><span class="sku">${c.id}</span><span>${esc(audName(c.audience))}</span><span>${esc(c.language)}</span><span>${c.channels.map(x=>x[0].toUpperCase()+x.slice(1)).join(" + ")}</span>${c.sentAt?`<span>Sent ${fmtDate(new Date(c.sentAt))}</span>`:""}</div></h3><span class="pill ${c.status}">${pill}</span></div>
+    ${c.status!=="discarded"?`<div class="previews">${previewBlocks(c)}</div>`:""}${foot}${res}</article>`;
+}
+function renderPane(){
+  if(S.tab==="camp"){
+    const list = S.campaigns.filter(c=>c.status!=="discarded");
+    pane.innerHTML = `<div><h2 class="sec">Campaigns</h2><div class="sampletag">Nothing is really sent in this demo. Drafts need your approval.</div></div>` +
+      (list.length? list.map(campCard).join("") : `<div class="empty">No campaigns yet. Ask Prachar to create one.</div>`);
+  } else if(S.tab==="cat"){
+    pane.innerHTML = `<div><h2 class="sec">Stock &amp; offers</h2><div class="sampletag">Read from the inventory system · trade prices include 18% GST · margin floor ${BIZ.minMargin}%</div></div>
+    <div class="tablewrap"><table><thead><tr><th>Part</th><th>HSN</th><th class="num">MRP</th><th class="num">Trade price</th><th class="num">Stock</th><th class="num">Margin</th><th>Status</th></tr></thead><tbody>
+    ${S.products.map(p=>{const o=activeOffer(p);const price=o?o.price:p.price;const m=Math.round((price-p.cost)/price*100);
+      return `<tr><td><b>${esc(p.brand)} ${esc(p.name)}</b>${o?`<span class="offer">${o.percent}% OFF</span>`:""}<div class="fit">${esc(p.fit)}</div><div class="sku">${p.sku}</div></td><td class="sku">${p.hsn}</td>
+      <td class="num">${inr(p.mrp)}</td><td class="num">${o?`<b>${inr(o.price)}</b><br><s class="fit">${inr(p.price)}</s><div class="fit">till ${fmtDate(o.until)}</div>`:inr(p.price)}</td>
+      <td class="num">${p.stock.toLocaleString("en-IN")}</td><td class="num">${m}%</td>
+      <td>${p.lastSale>=90?`<span class="flag dead">No sale ${p.lastSale}d</span>`:p.fast?`<span class="flag fast">Fast mover</span>`:""}</td></tr>`;}).join("")}
+    </tbody></table></div>`;
+  } else {
+    pane.innerHTML = `<div><h2 class="sec">Audiences</h2><div class="sampletag">Built from the customer list · only opted-in numbers get WhatsApp marketing</div></div>
+    <div class="aud">${AUDIENCES.map(a=>`<div class="aud-c"><h4>${esc(a.name)}</h4><dl><dt>Customers</dt><dd>${a.total}</dd><dt>WhatsApp opted-in</dt><dd>${a.optIn}</dd><dt>Cost per blast</dt><dd>${inr(waCost(a.id))}</dd></dl><div class="fit" style="margin-top:6px">${esc(a.note)}</div></div>`).join("")}
+    <div class="aud-c"><h4>Social pages</h4><dl><dt>Facebook followers</dt><dd>${SOCIAL.facebook.followers.toLocaleString("en-IN")}</dd><dt>Instagram followers</dt><dd>${SOCIAL.instagram.followers.toLocaleString("en-IN")}</dd></dl><div class="fit" style="margin-top:6px">Page posts are free; boosted posts use Meta ads.</div></div></div>`;
+  }
+  if(S.flash){ const f=S.flash; setTimeout(()=>{ const el=$("card-"+f); if(el) el.scrollIntoView({block:"nearest",behavior:"smooth"}); },30); S.flash=null; }
+}
+function render(){
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected", String(b.dataset.tab===S.tab)));
+  $("cCamp").textContent = S.campaigns.filter(c=>c.status==="draft").length || S.campaigns.filter(c=>c.status!=="discarded").length;
+  $("cOff").textContent = S.products.filter(p=>activeOffer(p)).length;
+  renderPane();
+}
+document.querySelector(".tabs").addEventListener("click", e=>{ const b=e.target.closest("button[data-tab]"); if(b){ S.tab=b.dataset.tab; render(); }});
+pane.addEventListener("click", e=>{
+  const a = e.target.closest("[data-approve]"), d = e.target.closest("[data-discard]");
+  if(a) approve(a.dataset.approve); if(d) discard(d.dataset.discard);
+});
+function discard(id){ const c=S.campaigns.find(x=>x.id===id); if(!c) return; c.status="discarded"; note(`Draft ${id} discarded.`); render(); }
+function approve(id){
+  const c=S.campaigns.find(x=>x.id===id); if(!c||c.status!=="draft") return;
+  c.status="sending"; render();
+  setTimeout(()=>{
+    const a = AUDIENCES.find(x=>x.id===c.audience); c.delivery={};
+    if(c.channels.includes("whatsapp")){ const del=Math.round(a.optIn*0.955); c.delivery.whatsapp={sent:a.optIn,delivered:del,cost:del*WA_RATE*(1+GST)}; }
+    const boost = c.adBudget*c.adDays;
+    if(c.channels.includes("facebook")) c.delivery.facebook={reach:Math.round(SOCIAL.facebook.followers*0.16 + boost*6.5)};
+    if(c.channels.includes("instagram")) c.delivery.instagram={reach:Math.round(SOCIAL.instagram.followers*0.3 + boost*5)};
+    c.status="sent"; c.sentAt=new Date(); render();
+    note(`${c.id} sent (simulated) on ${c.channels.join(", ")}. Tracking orders…`);
+    setTimeout(()=>{
+      const del = c.delivery.whatsapp?c.delivery.whatsapp.delivered:0;
+      const socialLeads = Math.round(((c.delivery.facebook?.reach||0)+(c.delivery.instagram?.reach||0))*0.004);
+      const replies = Math.round(del*0.08)+socialLeads, orders = Math.max(1,Math.round(replies*0.45));
+      const p = S.products.find(x=>x.sku===c.skus[0]); const unit = c.offerSnap?c.offerSnap.price:p.price;
+      const units = Math.min(p.stock, orders*(p.price>2000?1:4));
+      c.results={replies,orders,units,sales:units*unit}; render();
+      note(`${c.id}: ${orders} orders, ${inr(units*unit)} in sales so far (simulated).`);
+    }, 3500);
+  }, 1400);
+}
+
+// ---------- chat ----------
+const log = $("log");
+let aiMode = "off", turns = [], busy = false, ctl = null, sample = null, aiReady = false;
+function mdLite(t){
+  const blocks = esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").split(/\n{2,}/);
+  return blocks.map(b=>{
+    const lines=b.split("\n");
+    if(lines.every(l=>/^\s*[-•*]\s+/.test(l))) return "<ul>"+lines.map(l=>"<li>"+l.replace(/^\s*[-•*]\s+/,"")+"</li>").join("")+"</ul>";
+    return "<p>"+lines.join("<br>")+"</p>";
+  }).join("");
+}
+function addMsg(role, html){
+  const el=document.createElement("div"); el.className="msg "+role;
+  el.innerHTML = role==="ai" ? `<div class="who">Prachar</div><div class="acts"></div><div class="body">${html||""}</div>` : html;
+  log.appendChild(el); log.scrollTop=log.scrollHeight; return el;
+}
+function note(t){ addMsg("note", esc(t)); }
+function addAct(bubble, label, cls){ const a=document.createElement("span"); a.className="act "+(cls||""); a.textContent=label; bubble.querySelector(".acts").appendChild(a); log.scrollTop=log.scrollHeight; return a; }
+
+function stateSummary(){
+  const offers = S.products.filter(p=>activeOffer(p)).map(p=>`${p.sku} ${p.offer.percent}% off → ${inr(p.offer.price)} till ${fmtDate(p.offer.until)}`);
+  const camps = S.campaigns.filter(c=>c.status!=="discarded").slice(0,6).map(c=>`${c.id} "${c.name}" [${c.status}] ${c.channels.join("+")} → ${c.audience}`);
+  return `Active offers: ${offers.join("; ")||"none"}\nCampaigns: ${camps.join("; ")||"none"}`;
+}
+const RULES = () => `You are Prachar, the AI CMO built into an Indian auto-parts distributor's inventory platform. You are chatting with the owner of ${BIZ.name}, ${BIZ.area}. They sell to garages, parts shops and fleet owners. Today is ${TODAY.toDateString()}.
+
+How to work:
+- Reply in the owner's language (English, Hindi, Hinglish or Telugu). Keep replies short: 2–5 lines, plain words, rupees with Indian digit grouping (₹1,45,000).
+- Find products with search_products before changing anything. If several match and the owner's words don't pick one, ask which (list SKU + name). Don't guess.
+- apply_discount changes the trade price for the offer period; the owner's instruction is their approval. If the margin guard blocks it, tell them the maximum allowed and ask.
+- For campaigns call create_campaign_draft with copy for each channel requested. You NEVER send: the owner reviews the draft in the Campaigns panel and taps "Approve & send". Say that clearly.
+- If the owner names no channel, use WhatsApp only and mention Facebook/Instagram are available. If no audience is given, choose the best fit (garages for workshop parts, fleets for commercial-vehicle parts, retailers for counter items) and say which.
+- To change an existing draft, create a new draft with replaces_id.
+- Copy rules: WhatsApp ≤ 600 characters: offer first, product + vehicle fit, old and new price, valid-till date, how to order ("Reply ORDER or call ${BIZ.phone}"), last line "Reply STOP to opt out". Facebook: 2–4 lines. Instagram: 1–3 lines + 3–6 hashtags (#Hyderabad #AutoParts …). poster_headline: max 5 words. Write in the language the owner asks for (default English; Hindi/Telugu in native script when asked). No fake urgency, no claims you can't back.
+- Paid boosts (ad_budget_per_day_inr) only if the owner asks for ads/boost or gives a budget.
+- For "what should I promote?" use get_insights. For results use get_campaign_status. All sends and results here are a simulation; say so if asked.
+- Never invent products, prices, stock or results.
+
+Business facts: WhatsApp phone ${BIZ.phone}; margin floor ${BIZ.minMargin}%; WhatsApp marketing costs ₹${WA_RATE} + 18% GST per delivered message; Meta ads carry 18% GST.
+${stateSummary()}`;
+
+function tools(bubble){
+  const wrap = (name, label, fn) => async (input, ctx) => {
+    const chip = addAct(bubble, label(input));
+    try { const r = await fn(input); chip.classList.add("ok"); return r; }
+    catch(e){ chip.classList.add("err"); throw e; }
+  };
+  return [
+    {name:"search_products",description:"Search the distributor's catalogue by product, brand, vehicle or SKU. Returns up to 6 matches with trade price, MRP, stock, margin, any active offer and days since last sale.",
+     inputSchema:{type:"object",properties:{query:{type:"string"}},required:["query"]},
+     execute: wrap("search", i=>"search: "+String(i.query||"").slice(0,30), i=>{ const r=findProducts(i.query).slice(0,6).map(productView); return r.length?r:"No matches. Try a vehicle model, brand or part type."; })},
+    {name:"apply_discount",description:"Apply a percentage discount to one SKU's trade price for N days (default 7). Enforces the margin floor; throws with the max allowed % if blocked. Returns old and offer price.",
+     inputSchema:{type:"object",properties:{sku:{type:"string"},percent:{type:"number"},days:{type:"number"}},required:["sku","percent"]},
+     execute: wrap("discount", i=>`discount ${i.sku} ${i.percent}%`, i=>applyDiscount(i.sku,i.percent,i.days))},
+    {name:"remove_discount",description:"End the active offer on a SKU and restore the normal trade price.",
+     inputSchema:{type:"object",properties:{sku:{type:"string"}},required:["sku"]},
+     execute: wrap("undiscount", i=>"end offer "+i.sku, i=>removeDiscount(i.sku))},
+    {name:"list_audiences",description:"List customer audiences with total customers, WhatsApp opted-in counts and cost per WhatsApp blast, plus Facebook/Instagram follower counts.",
+     execute: wrap("aud", ()=>"audiences", ()=>({audiences:AUDIENCES.map(a=>({id:a.id,name:a.name,customers:a.total,whatsapp_opted_in:a.optIn,blast_cost_inr:Math.round(waCost(a.id))})),social:SOCIAL}))},
+    {name:"create_campaign_draft",description:"Create a campaign DRAFT with ready copy for WhatsApp, Facebook and/or Instagram. It appears in the Campaigns panel for the owner to approve; it is not sent. Uses the SKU's active offer for the poster. Returns id and estimated cost.",
+     inputSchema:{type:"object",properties:{
+       name:{type:"string",description:"Short campaign name"},
+       skus:{type:"array",items:{type:"string"}},
+       audience_id:{type:"string",enum:AUDIENCES.map(a=>a.id)},
+       channels:{type:"array",items:{type:"string",enum:["whatsapp","facebook","instagram"]}},
+       language:{type:"string"},
+       poster_headline:{type:"string"},
+       whatsapp_message:{type:"string"}, facebook_post:{type:"string"}, instagram_caption:{type:"string"},
+       ad_budget_per_day_inr:{type:"number",description:"0 for organic posts only"}, ad_days:{type:"number"},
+       replaces_id:{type:"string",description:"Draft id this one replaces"}},
+       required:["name","skus","audience_id","channels","poster_headline"]},
+     execute: wrap("draft", i=>"draft campaign → "+(Array.isArray(i.channels)?i.channels.join("+"):i.channels), i=>createDraft(i))},
+    {name:"get_insights",description:"Marketing opportunities from inventory data: dead stock (no sale 90+ days), fast movers, lapsed customers, and the current season/festival context.",
+     execute: wrap("ins", ()=>"insights", ()=>insights())},
+    {name:"get_campaign_status",description:"Status, delivery and (simulated) results for a campaign id.",
+     inputSchema:{type:"object",properties:{id:{type:"string"}},required:["id"]},
+     execute: wrap("status", i=>"status "+i.id, i=>campaignStatus(String(i.id)))}
+  ];
+}
+const ERR = {rate_limited:"Too many requests just now. Try again in a minute.",session_expired:"Your session expired. Sign in again to keep chatting.",refused:"I can't help with that request.",upstream_error:"The connection dropped. Send your message again.",empty_completion:"I didn't get an answer. Try rephrasing.",prompt_too_large:"The conversation got too long. Tap Reset demo to start fresh."};
+
+
+// ---- server mode (Cloud Run backend holds the API key) ----
+let apiMsgs = [], accessCode = "", awaitingCode = false;
+try{ accessCode = sessionStorage.getItem("prachar-code") || ""; }catch(_){}
+function trimApi(){
+  // keep the last ~12 plain user turns; cut only at a plain user message so tool pairs stay intact
+  const starts = apiMsgs.map((m,i)=> m.role==="user" && typeof m.content==="string" ? i : -1).filter(i=>i>=0);
+  if(starts.length>12) apiMsgs = apiMsgs.slice(starts[starts.length-12]);
+}
+async function askServer(text){
+  if(awaitingCode){ accessCode = text.trim(); awaitingCode=false; try{ sessionStorage.setItem("prachar-code", accessCode); }catch(_){}
+    note("Access code saved. Send your request again."); return; }
+  apiMsgs.push({role:"user",content:text}); trimApi();
+  const bubble = addMsg("ai", `<span class="thinking">Thinking…</span>`);
+  const body = bubble.querySelector(".body");
+  const exec = Object.fromEntries(tools(bubble).map(t=>[t.name,t.execute]));
+  ctl = new AbortController(); setBusy(true);
+  let shown = "";
+  try{
+    for(let round=0; round<7; round++){
+      const r = await fetch("/api/chat",{method:"POST",signal:ctl.signal,headers:{"content-type":"application/json","x-access-code":accessCode},
+        body:JSON.stringify({state:stateSummary(), messages:apiMsgs})});
+      if(r.status===401){ apiMsgs.pop(); awaitingCode=true; body.innerHTML="<p>This demo needs an access code. Type it below.</p>"; return; }
+      if(r.status===429){ body.innerHTML = (shown?mdLite(shown):"")+`<p class="thinking">${esc(ERR.rate_limited)}</p>`; apiMsgs.pop(); return; }
+      if(!r.ok) throw new Error("upstream");
+      const data = await r.json();
+      const content = data.content||[];
+      apiMsgs.push({role:"assistant",content});
+      const txt = content.filter(b=>b.type==="text").map(b=>b.text).join("\n").trim();
+      if(txt){ shown = shown ? shown+"\n\n"+txt : txt; body.innerHTML = mdLite(shown); log.scrollTop=log.scrollHeight; }
+      const uses = content.filter(b=>b.type==="tool_use");
+      if(!uses.length) break;
+      const results = [];
+      for(const u of uses){
+        const fn = exec[u.name];
+        try{ const out = fn ? await fn(u.input||{}, {signal:ctl.signal}) : (()=>{throw new Error("Unknown tool")})();
+          results.push({type:"tool_result",tool_use_id:u.id,content: typeof out==="string"?out:JSON.stringify(out)}); }
+        catch(e){ results.push({type:"tool_result",tool_use_id:u.id,content:"Error: "+(e.message||e),is_error:true}); }
+      }
+      apiMsgs.push({role:"user",content:results});
+      if(!shown) body.innerHTML = `<span class="thinking">Working…</span>`;
+    }
+    if(!shown) body.innerHTML = "<p>Done. Check the Campaigns panel.</p>";
+    // make sure the conversation ends on an assistant turn before the next user message
+    if(apiMsgs.length && apiMsgs[apiMsgs.length-1].role==="user") apiMsgs.push({role:"assistant",content:[{type:"text",text:shown||"Done."}]});
+  }catch(e){
+    if(e && e.name==="AbortError"){ body.innerHTML = (shown?mdLite(shown):"")+"<p class='thinking'>Stopped.</p>"; }
+    else body.innerHTML = (shown?mdLite(shown):"")+`<p class="thinking">${esc(ERR.upstream_error)}</p>`;
+    // drop the broken tail back to the last clean assistant turn
+    while(apiMsgs.length && !(apiMsgs[apiMsgs.length-1].role==="assistant" && !apiMsgs[apiMsgs.length-1].content.some?.(b=>b.type==="tool_use"))) apiMsgs.pop();
+  }finally{ setBusy(false); }
+}
+
+async function askAI(text){
+  turns.push({role:"user",content:text});
+  if(turns.length>16) turns = turns.slice(-16);
+  while(turns.length && turns[0].role!=="user") turns.shift();
+  const bubble = addMsg("ai", `<span class="thinking">Thinking…</span>`);
+  const body = bubble.querySelector(".body");
+  ctl = new AbortController(); setBusy(true);
+  try{
+    const res = await sample([{role:"user",content:RULES()}, ...turns], {cache:false, modelTier:"quick", signal:ctl.signal, tools:tools(bubble),
+      onText:({text})=>{ body.innerHTML = mdLite(text); log.scrollTop=log.scrollHeight; }});
+    body.innerHTML = mdLite(res.text);
+    turns.push({role:"assistant",content:res.text});
+  }catch(e){
+    if(e && e.code==="cancelled"){ body.innerHTML = e.text?mdLite(e.text)+"<p class='thinking'>Stopped.</p>":"<p class='thinking'>Stopped.</p>"; }
+    else if(e && ["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed","tools_unavailable"].includes(e.code)){
+      setMode(false); turns.pop(); body.innerHTML = "<p>AI isn't available in this view, so I'll use demo mode.</p>"; offline(text, bubble);
+    } else { body.innerHTML = (e && e.text?mdLite(e.text):"") + `<p class="thinking">${esc(ERR[e&&e.code]||ERR.upstream_error)}</p>`; }
+  }finally{ setBusy(false); }
+}
+
+// offline demo parser (used when Claude isn't available in this view)
+function offline(text, bubble){
+  bubble = bubble || addMsg("ai","");
+  const body = bubble.querySelector(".body");
+  const t = text.toLowerCase();
+  const say = h => { body.innerHTML += h; log.scrollTop=log.scrollHeight; };
+  try{
+    if(/promote|suggest|what should|dead stock|insight/.test(t) && !/%/.test(t)){
+      addAct(bubble,"insights","ok"); const i=insights();
+      say(mdLite(`**Worth promoting this week**\n\n${i.dead_stock.map(d=>`- ${d.name} (${d.fits}): ${d.stock_units} units, no sale in ${d.days_since_last_sale} days`).join("\n")}\n\n58 lapsed garages are opted in on WhatsApp. Try: "15% off on Ape brake shoes, WhatsApp to fleets".`)); return;
+    }
+    const pm = t.match(/(\d{1,2})\s*%/);
+    const q = (t.match(/(?:off|discount)\s+(?:on|for)?\s*(.+?)(?:\s+(?:and|&|then|,|send|to|for\s+\d|valid|till|campaign)\b|$)/)||[])[1];
+    const before = pm ? t.split(pm[0])[0].replace(/apply|give|put/g," ") : "";
+    if(!pm || (!q && !before.trim())){ say(mdLite(`In demo mode I understand commands like:\n\n- 20% off on Swift brake pads and send to garages on WhatsApp and Instagram\n- 15% off on Tata Ace shock absorbers, WhatsApp to fleets\n- What should I promote this week?`)); return; }
+    const useBefore = /[a-z]{3,}/.test(before);
+    const qq = useBefore ? before : q;
+    let found = findProducts(qq);
+    if(!found.length && q && useBefore) found = findProducts(q);
+    addAct(bubble,"search: "+qq.trim().slice(0,30),"ok");
+    if(!found.length){ say(mdLite(`I couldn't find "${q}" in stock. Try a vehicle or brand name.`)); return; }
+    const p = found[0]; let r;
+    const dAct = addAct(bubble,`discount ${p.sku} ${pm[1]}%`);
+    const dm = t.match(/(\d{1,2})\s*days?/); try{ r = applyDiscount(p.sku, Number(pm[1]), dm?Number(dm[1]):7); dAct.classList.add("ok"); }
+    catch(e){ dAct.classList.add("err"); say(mdLite(e.message)); return; }
+    let ch = []; if(/whats|wa\b/.test(t)) ch.push("whatsapp"); if(/facebook|\bfb\b/.test(t)) ch.push("facebook"); if(/insta|\big\b/.test(t)) ch.push("instagram");
+    const wantsCampaign = ch.length || /campaign|send|blast|post/.test(t);
+    if(!wantsCampaign){ say(mdLite(`Done. **${p.brand} ${p.name}** (${p.fit}) is now **${inr(r.offer_price)}** (was ${inr(r.old_price)}) till ${r.valid_until}. Margin after offer: ${r.margin_after_pct}%.\n\nWant me to send it to customers on WhatsApp, Facebook or Instagram?`)); return; }
+    if(!ch.length) ch=["whatsapp"];
+    let aud = /fleet|transport/.test(t)?"fleets":/retail|shop/.test(t)?"retailers":/lapsed|inactive/.test(t)?"lapsed":/all|everyone/.test(t)?"all":(p.seg==="cv"?"fleets":"garages");
+    const wa = `${r.percent}% OFF – ${p.brand} ${p.name}\nFits: ${p.fit}\nNow ${inr(r.offer_price)} (was ${inr(r.old_price)}) · Offer till ${r.valid_until}\n${p.stock} units ready in Kukatpally godown.\nReply ORDER or call ${BIZ.phone}.\nReply STOP to opt out.`;
+    const fb = `${r.percent}% off ${p.brand} ${p.name} for ${p.fit}.\nGarage price ${inr(r.offer_price)} (was ${inr(r.old_price)}), till ${r.valid_until}.\nWhatsApp us on ${BIZ.phone} to order.`;
+    const ig = `${p.brand} ${p.name} for ${p.fit} – now ${inr(r.offer_price)}. Offer till ${r.valid_until}. #Hyderabad #AutoParts #Kukatpally #GarageLife #${p.brand.split(" ")[0]}`;
+    const dA = addAct(bubble,"draft campaign → "+ch.join("+"));
+    const d = createDraft({name:`${r.percent}% off ${p.name} – ${p.fit.split("(")[0].trim()}`,skus:[p.sku],audience_id:aud,channels:ch,language:"English",poster_headline:`${p.name}`,whatsapp_message:wa,facebook_post:fb,instagram_caption:ig});
+    dA.classList.add("ok");
+    say(mdLite(`Done. **${p.brand} ${p.name}** is now **${inr(r.offer_price)}** (was ${inr(r.old_price)}) till ${r.valid_until}.\n\nDraft **${d.campaign_id}** is ready for ${audName(aud)} on ${ch.map(cap).join(", ")}. Estimated cost ${inr(d.est_cost_inr)}. Check the previews and tap **Approve & send**.`));
+    if(window.matchMedia("(max-width:860px)").matches) note("Tap “Campaigns & stock” above to review the draft.");
+  }catch(e){ say(mdLite("Something went wrong: "+e.message)); }
+}
+
+function setBusy(b){ busy=b; $("sendBtn").disabled=b; $("stopBtn").hidden=!b; }
+function setMode(on){ aiReady=on; if(!on && aiMode!=="server") aiMode="off"; $("modeDot").className="dot "+(on?"on":"off"); $("modeText").textContent= on?"AI connected":"Demo mode (scripted)"; }
+$("stopBtn").onclick = ()=> ctl && ctl.abort();
+const input = $("input");
+input.addEventListener("input", ()=>{ input.style.height="auto"; input.style.height=Math.min(input.scrollHeight,140)+"px"; });
+input.addEventListener("keydown", e=>{ if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); $("composer").requestSubmit(); }});
+$("composer").addEventListener("submit", e=>{
+  e.preventDefault(); const text=input.value.trim(); if(!text||busy) return;
+  input.value=""; input.style.height="auto";
+  addMsg("me", esc(text)); $("chips").hidden = true;
+  if(aiMode==="server") askServer(text); else if(aiReady && sample) askAI(text); else offline(text);
+});
+const SUGG = [
+  "Apply 20% off on Swift brake pads and send a campaign to garages on WhatsApp, Facebook and Instagram",
+  "What should I promote this week?",
+  "Ape brake shoes 15% off for 10 days, WhatsApp to fleet owners in Telugu",
+  "Boost the Swift brake pad offer on Instagram with ₹300 a day for 5 days"
+];
+function chips(){ $("chips").innerHTML = SUGG.map((s,i)=>`<button type="button" class="chip" data-i="${i}">${esc(s)}</button>`).join(""); }
+$("chips").addEventListener("click", e=>{ const b=e.target.closest(".chip"); if(!b||busy) return; input.value=SUGG[b.dataset.i]; $("composer").requestSubmit(); });
+function welcome(){
+  log.innerHTML="";
+  addMsg("ai", mdLite(`Namaste! I'm **Prachar**, your AI CMO. I can see your stock, prices and customer lists.\n\nTell me what you want, like an offer on a part and where to send it. I'll set the price, write the WhatsApp message and posts, and prepare a draft for you to approve.\n\n**Heads-up:** 146 Bosch brake pads (Swift/Dzire) haven't sold in 128 days.`));
+}
+$("resetBtn").onclick = ()=>{ if(ctl) ctl.abort(); seed(); turns=[]; apiMsgs=[]; welcome(); $("chips").hidden=false; render(); };
+$("vChat").onclick=()=>{ $("app").dataset.view="chat"; $("vChat").setAttribute("aria-pressed","true"); $("vWork").setAttribute("aria-pressed","false"); };
+$("vWork").onclick=()=>{ $("app").dataset.view="work"; $("vWork").setAttribute("aria-pressed","true"); $("vChat").setAttribute("aria-pressed","false"); };
+
+welcome(); chips(); render();
+(async ()=>{
+  try{
+    const h = await fetch("/api/health",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
+    if(h && h.ai){ aiMode="server"; aiReady=true; $("modeDot").className="dot on"; $("modeText").textContent="AI connected"; return; }
+  }catch(_){}
+  try{
+    sample = window.claude ? await window.claude.use("sample") : null;
+    const lim = sample ? await sample.limits().catch(()=>null) : null;
+    setMode(!!(sample && lim && lim.tools));
+  }catch(_){ setMode(false); }
+})();
+})();
+</script>
+</body>
+</html>
